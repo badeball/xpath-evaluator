@@ -9,7 +9,7 @@
     "url": "git://github.com/badeball/xpath-evaluator.git"
   },
   "dependencies": {
-    "xpath-parser": "badeball/xpath-parser"
+    "xpath-analyzer": "badeball/xpath-analyzer"
   },
   "devDependencies": {
     "eslint": "0.24.1",
