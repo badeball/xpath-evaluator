@@ -1,6 +1,6 @@
 {
   "name": "xpath-evaluator",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "An evaluator for XPath 1.0 expressions.",
   "main": "lib/xpath_evaluator.js",
   "author": "Jonas Amundsen <jonasba@gmail.com>",
