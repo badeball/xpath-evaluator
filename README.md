@@ -1,6 +1,7 @@
 # xpath-evaluator
 
 [![Build Status](https://travis-ci.org/badeball/xpath-evaluator.svg?branch=master)](https://travis-ci.org/badeball/xpath-evaluator)
+[![Code Climate](https://codeclimate.com/github/badeball/xpath-evaluator/badges/gpa.svg)](https://codeclimate.com/github/badeball/xpath-evaluator)
 
 An evaluator for XPath 1.0 expressions. An adapter is required and there's
 adapters implemented for the [DOM][xpath-dom] and for the [internal
