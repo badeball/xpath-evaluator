@@ -10,7 +10,7 @@ var Context = require("../../lib/context");
 var Boolean_ = require("../../lib/functions/boolean");
 /* eslint-enable no-underscore-dangle */
 
-var NodeSetType = require("../../lib/types/node_set_type");
+var XPathNodeSet = require("../../lib/types/xpath_node_set");
 
 describe("XPathEvaluator", function () {
   describe("boolean()", function () {
@@ -22,18 +22,18 @@ describe("XPathEvaluator", function () {
 
     it("should return an error when given two arguments", function () {
       Assert.throws(function () {
-        Boolean_.evaluate(new Context(), new NodeSetType(), new NodeSetType());
+        Boolean_.evaluate(new Context(), new XPathNodeSet(), new XPathNodeSet());
       });
     });
 
     it("should return false for an empty nodeset", function () {
-      var result = Boolean_.evaluate(new Context(), new NodeSetType());
+      var result = Boolean_.evaluate(new Context(), new XPathNodeSet());
 
       Assert.equal(result.value, false);
     });
 
     it("should return true for an non-empty nodeset", function () {
-      var result = Boolean_.evaluate(new Context(), new NodeSetType([{}]));
+      var result = Boolean_.evaluate(new Context(), new XPathNodeSet([{}]));
 
       Assert.equal(result.value, true);
     });
