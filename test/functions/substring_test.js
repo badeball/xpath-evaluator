@@ -4,9 +4,9 @@
 
 var Assert = require("assert");
 
-var StringType = require("../../lib/types/string_type");
+var XPathString = require("../../lib/types/xpath_string");
 
-var NumberType = require("../../lib/types/number_type");
+var XPathNumber = require("../../lib/types/xpath_number");
 
 var Substring = require("../../lib/functions/substring");
 
@@ -17,9 +17,9 @@ function assertSubstring () {
   it("should return " + expectedResult + " when provided " + substringArgs.join(", "), function () {
     substringArgs = substringArgs.map(function (arg, i) {
       if (i === 0) {
-        return new StringType(arg);
+        return new XPathString(arg);
       } else {
-        return new NumberType(arg);
+        return new XPathNumber(arg);
       }
     });
 
