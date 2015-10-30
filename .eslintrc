@@ -1,4 +1,8 @@
-{
+{,
+  "env": {
+    "mocha": true,
+    "node": true
+  },
   "rules": {
     "no-loop-func": 0
   }
