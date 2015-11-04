@@ -23,7 +23,7 @@ function assertSubstring () {
 
     substringArgs.unshift(null);
 
-    Assert.equal(Substring.evaluate.apply(null, substringArgs).value, expectedResult);
+    Assert.equal(new Substring().evaluate.apply(null, substringArgs).value, expectedResult);
   });
 }
 

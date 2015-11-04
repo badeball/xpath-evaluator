@@ -12,7 +12,7 @@ function assertTranslate (expectedResult, base, mapFrom, mapTo) {
     mapFrom = new XPathString(mapFrom);
     mapTo = new XPathString(mapTo);
 
-    Assert.equal(Translate.evaluate(null, base, mapFrom, mapTo).value, expectedResult);
+    Assert.equal(new Translate().evaluate(null, base, mapFrom, mapTo).value, expectedResult);
   });
 }
 
