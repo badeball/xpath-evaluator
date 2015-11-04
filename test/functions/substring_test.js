@@ -21,8 +21,6 @@ function assertSubstring () {
       }
     });
 
-    substringArgs.unshift(null);
-
     Assert.equal(new Substring().evaluate.apply(null, substringArgs).value, expectedResult);
   });
 }

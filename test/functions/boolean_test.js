@@ -14,24 +14,24 @@ describe("XPathEvaluator", function () {
   describe("boolean()", function () {
     it("should throw an error when given no arguments", function () {
       Assert.throws(function () {
-        new Boolean_().evaluate(new Context());
+        new Boolean_(new Context()).evaluate();
       });
     });
 
     it("should return an error when given two arguments", function () {
       Assert.throws(function () {
-        new Boolean_().evaluate(new Context(), new XPathNodeSet(), new XPathNodeSet());
+        new Boolean_(new Context()).evaluate(new XPathNodeSet(), new XPathNodeSet());
       });
     });
 
     it("should return false for an empty nodeset", function () {
-      var result = new Boolean_().evaluate(new Context(), new XPathNodeSet());
+      var result = new Boolean_(new Context()).evaluate(new XPathNodeSet());
 
       Assert.equal(result.value, false);
     });
 
     it("should return true for an non-empty nodeset", function () {
-      var result = new Boolean_().evaluate(new Context(), new XPathNodeSet([{}]));
+      var result = new Boolean_(new Context()).evaluate(new XPathNodeSet([{}]));
 
       Assert.equal(result.value, true);
     });
