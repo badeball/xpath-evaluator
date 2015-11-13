@@ -12,7 +12,7 @@
     "xpath-analyzer": "^1.0.0"
   },
   "devDependencies": {
-    "eslint": "0.24.1",
+    "eslint": "1.9.0",
     "mocha": "2.3.0"
   },
   "files": [
