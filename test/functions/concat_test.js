@@ -1,15 +1,13 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import XPathString from "../../lib/types/xpath_string";
 
-var XPathString = require("../../lib/types/xpath_string");
-
-var Concat = require("../../lib/functions/concat");
+import Concat from "../../lib/functions/concat";
 
 describe("XPathEvaluator", function () {
   describe("concat()", function () {
     it("should return the concatenation of the args", function () {
-      var result = Concat.evaluate(null, new XPathString("foo"), new XPathString("bar"), new XPathString("baz"));
+      var result = Concat(null, new XPathString("foo"), new XPathString("bar"), new XPathString("baz"));
 
       Assert.equal(result.value, "foobarbaz");
     });

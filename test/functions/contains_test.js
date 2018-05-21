@@ -1,21 +1,19 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import XPathString from "../../lib/types/xpath_string";
 
-var XPathString = require("../../lib/types/xpath_string");
-
-var Contains = require("../../lib/functions/contains");
+import Contains from "../../lib/functions/contains";
 
 describe("XPathEvaluator", function () {
   describe("contains()", function () {
     it("should return true if the 1st arg contains the 2nd arg", function () {
-      var result = Contains.evaluate(null, new XPathString("foobarbaz"), new XPathString("baz"));
+      var result = Contains(null, new XPathString("foobarbaz"), new XPathString("baz"));
 
       Assert.equal(result.value, true);
     });
 
     it("should return false if the 1st arg doesn't contain the 2nd arg", function () {
-      var result = Contains.evaluate(null, new XPathString("bar"), new XPathString("foo"));
+      var result = Contains(null, new XPathString("bar"), new XPathString("foo"));
 
       Assert.equal(result.value, false);
     });

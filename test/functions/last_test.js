@@ -1,15 +1,13 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import Context from "../../lib/context";
 
-var Context = require("../../lib/context");
-
-var Last = require("../../lib/functions/last");
+import Last from "../../lib/functions/last";
 
 describe("XPathEvaluator", function () {
   describe("last()", function () {
     it("should return the size of the context", function () {
-      var result = Last.evaluate(new Context(null, 0, 3));
+      var result = Last(new Context(null, 0, 3));
 
       Assert.equal(result.value, 3);
     });

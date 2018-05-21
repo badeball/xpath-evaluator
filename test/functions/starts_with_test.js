@@ -1,21 +1,19 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import XPathString from "../../lib/types/xpath_string";
 
-var XPathString = require("../../lib/types/xpath_string");
-
-var StartsWith = require("../../lib/functions/starts_with");
+import StartsWith from "../../lib/functions/starts_with";
 
 describe("XPathEvaluator", function () {
   describe("starts-with()", function () {
     it("should return true if the 1st arg starts with the 2nd arg", function () {
-      var result = StartsWith.evaluate(null, new XPathString("foobar"), new XPathString("foo"));
+      var result = StartsWith(null, new XPathString("foobar"), new XPathString("foo"));
 
       Assert.equal(result.value, true);
     });
 
     it("should return false if the 1st arg doesn't start with the 2nd arg", function () {
-      var result = StartsWith.evaluate(null, new XPathString("bar"), new XPathString("foo"));
+      var result = StartsWith(null, new XPathString("bar"), new XPathString("foo"));
 
       Assert.equal(result.value, false);
     });

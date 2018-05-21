@@ -1,15 +1,13 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import XPathString from "../../lib/types/xpath_string";
 
-var XPathString = require("../../lib/types/xpath_string");
-
-var StringLength = require("../../lib/functions/string_length");
+import StringLength from "../../lib/functions/string_length";
 
 describe("XPathEvaluator", function () {
   describe("string-length()", function () {
     it("should return the length of the string", function () {
-      var result = StringLength.evaluate(null, new XPathString("foo"));
+      var result = StringLength(null, new XPathString("foo"));
 
       Assert.equal(result.value, 3);
     });

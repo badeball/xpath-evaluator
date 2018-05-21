@@ -2,21 +2,27 @@
   "name": "xpath-evaluator",
   "version": "3.0.0",
   "description": "An evaluator for XPath 1.0 expressions.",
-  "main": "lib/xpath_evaluator.js",
+  "main": "dist/xpath_evaluator.cjs.js",
+  "module": "dist/xpath_evaluator.esm.js",
   "author": "Jonas Amundsen <jonasba@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git://github.com/badeball/xpath-evaluator.git"
   },
+  "scripts": {
+    "prepublishOnly": "make ensure-built"
+  },
   "dependencies": {
-    "xpath-analyzer": "^1.0.0"
+    "xpath-analyzer": "^2.0.0-rc1"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
-    "mocha": "^5.2.0"
+    "esm": "^3.0.84",
+    "mocha": "^5.2.0",
+    "rollup": "^1.0.1"
   },
   "files": [
-    "lib"
+    "dist"
   ],
   "license": "MIT"
 }

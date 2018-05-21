@@ -1,12 +1,10 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import XPathString from "../../lib/types/xpath_string";
 
-var XPathString = require("../../lib/types/xpath_string");
+import XPathNumber from "../../lib/types/xpath_number";
 
-var XPathNumber = require("../../lib/types/xpath_number");
-
-var Substring = require("../../lib/functions/substring");
+import Substring from "../../lib/functions/substring";
 
 function assertSubstring () {
   var substringArgs = [].slice.call(arguments),
@@ -23,7 +21,7 @@ function assertSubstring () {
 
     substringArgs.unshift(null);
 
-    Assert.equal(Substring.evaluate.apply(null, substringArgs).value, expectedResult);
+    Assert.equal(Substring.apply(null, substringArgs).value, expectedResult);
   });
 }
 

@@ -1,10 +1,8 @@
-"use strict";
+import Assert from "assert";
 
-var Assert = require("assert");
+import XPathString from "../../lib/types/xpath_string";
 
-var XPathString = require("../../lib/types/xpath_string");
-
-var Translate = require("../../lib/functions/translate");
+import Translate from "../../lib/functions/translate";
 
 function assertTranslate (expectedResult, base, mapFrom, mapTo) {
   it("should return " + expectedResult + " when provided " + base + ", " + mapFrom + ", " + mapTo, function () {
@@ -12,7 +10,7 @@ function assertTranslate (expectedResult, base, mapFrom, mapTo) {
     mapFrom = new XPathString(mapFrom);
     mapTo = new XPathString(mapTo);
 
-    Assert.equal(Translate.evaluate(null, base, mapFrom, mapTo).value, expectedResult);
+    Assert.equal(Translate(null, base, mapFrom, mapTo).value, expectedResult);
   });
 }
 
