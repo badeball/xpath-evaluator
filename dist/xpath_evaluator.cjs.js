@@ -4,10 +4,8 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var XPathAnalyzer = _interopDefault(require('xpath-analyzer'));
-var expr_type = require('xpath-analyzer/lib/expr_type');
-var axis_specifier = require('xpath-analyzer/lib/axis_specifier');
-var node_type = require('xpath-analyzer/lib/node_type');
+var XPathAnalyzer = require('xpath-analyzer');
+var XPathAnalyzer__default = _interopDefault(XPathAnalyzer);
 
 function Context (node, position, last) {
   this.node = node;
@@ -336,21 +334,21 @@ function evaluate$5 (rootEvaluator, context) {
 
 function evaluate$6 (rootEvaluator, context) {
   return rootEvaluator.evaluate({
-    type: expr_type.RELATIVE_LOCATION_PATH,
+    type: XPathAnalyzer.RELATIVE_LOCATION_PATH,
     steps: [{
-      axis: axis_specifier.ANCESTOR_OR_SELF,
+      axis: XPathAnalyzer.ANCESTOR_OR_SELF,
       test: {
-        type: node_type.NODE
+        type: XPathAnalyzer.NODE
       }
     }, {
-      axis: axis_specifier.FOLLOWING_SIBLING,
+      axis: XPathAnalyzer.FOLLOWING_SIBLING,
       test: {
-        type: node_type.NODE
+        type: XPathAnalyzer.NODE
       }
     }, {
-      axis: axis_specifier.DESCENDANT_OR_SELF,
+      axis: XPathAnalyzer.DESCENDANT_OR_SELF,
       test: {
-        type: node_type.NODE
+        type: XPathAnalyzer.NODE
       }
     }]
   }, context);
@@ -376,21 +374,21 @@ function evaluate$8 (rootEvaluator, context) {
 
 function evaluate$9 (rootEvaluator, context) {
   return rootEvaluator.evaluate({
-    type: expr_type.RELATIVE_LOCATION_PATH,
+    type: XPathAnalyzer.RELATIVE_LOCATION_PATH,
     steps: [{
-      axis: axis_specifier.ANCESTOR_OR_SELF,
+      axis: XPathAnalyzer.ANCESTOR_OR_SELF,
       test: {
-        type: node_type.NODE
+        type: XPathAnalyzer.NODE
       }
     }, {
-      axis: axis_specifier.PRECEDING_SIBLING,
+      axis: XPathAnalyzer.PRECEDING_SIBLING,
       test: {
-        type: node_type.NODE
+        type: XPathAnalyzer.NODE
       }
     }, {
-      axis: axis_specifier.DESCENDANT_OR_SELF,
+      axis: XPathAnalyzer.DESCENDANT_OR_SELF,
       test: {
-        type: node_type.NODE
+        type: XPathAnalyzer.NODE
       }
     }]
   }, context);
@@ -405,19 +403,19 @@ function evaluate$b (rootEvaluator, context) {
 }
 
 var Axes = {
-  [axis_specifier.ANCESTOR]: evaluate,
-  [axis_specifier.ANCESTOR_OR_SELF]: evaluate$1,
-  [axis_specifier.ATTRIBUTE]: evaluate$2,
-  [axis_specifier.CHILD]: evaluate$3,
-  [axis_specifier.DESCENDANT]: evaluate$4,
-  [axis_specifier.DESCENDANT_OR_SELF]: evaluate$5,
-  [axis_specifier.FOLLOWING]: evaluate$6,
-  [axis_specifier.FOLLOWING_SIBLING]: evaluate$7,
-  [axis_specifier.NAMESPACE]: Namespace,
-  [axis_specifier.PARENT]: evaluate$8,
-  [axis_specifier.PRECEDING]: evaluate$9,
-  [axis_specifier.PRECEDING_SIBLING]: evaluate$a,
-  [axis_specifier.SELF]: evaluate$b
+  [XPathAnalyzer.ANCESTOR]: evaluate,
+  [XPathAnalyzer.ANCESTOR_OR_SELF]: evaluate$1,
+  [XPathAnalyzer.ATTRIBUTE]: evaluate$2,
+  [XPathAnalyzer.CHILD]: evaluate$3,
+  [XPathAnalyzer.DESCENDANT]: evaluate$4,
+  [XPathAnalyzer.DESCENDANT_OR_SELF]: evaluate$5,
+  [XPathAnalyzer.FOLLOWING]: evaluate$6,
+  [XPathAnalyzer.FOLLOWING_SIBLING]: evaluate$7,
+  [XPathAnalyzer.NAMESPACE]: Namespace,
+  [XPathAnalyzer.PARENT]: evaluate$8,
+  [XPathAnalyzer.PRECEDING]: evaluate$9,
+  [XPathAnalyzer.PRECEDING_SIBLING]: evaluate$a,
+  [XPathAnalyzer.SELF]: evaluate$b
 };
 
 function XPathNumber (value) {
@@ -455,19 +453,19 @@ function evaluate$c (rootEvaluator, step, context, type) {
     });
   }
 
-  if (step.test.type && step.test.type !== node_type.NODE) {
+  if (step.test.type && step.test.type !== XPathAnalyzer.NODE) {
     var nodeType;
 
     switch (step.test.type) {
-      case node_type.COMMENT:
+      case XPathAnalyzer.COMMENT:
         nodeType = COMMENT_NODE;
         break;
 
-      case node_type.PROCESSING_INSTRUCTION:
+      case XPathAnalyzer.PROCESSING_INSTRUCTION:
         nodeType = PROCESSING_INSTRUCTION_NODE;
         break;
 
-      case node_type.TEXT:
+      case XPathAnalyzer.TEXT:
         nodeType = TEXT_NODE;
         break;
 
@@ -482,10 +480,10 @@ function evaluate$c (rootEvaluator, step, context, type) {
 
   if (step.predicates) {
     var reversed = (
-      step.axis === axis_specifier.ANCESTOR ||
-      step.axis === axis_specifier.ANCESTOR_OR_SELF ||
-      step.axis === axis_specifier.PRECEDING ||
-      step.axis === axis_specifier.PRECEDING_SIBLING);
+      step.axis === XPathAnalyzer.ANCESTOR ||
+      step.axis === XPathAnalyzer.ANCESTOR_OR_SELF ||
+      step.axis === XPathAnalyzer.PRECEDING ||
+      step.axis === XPathAnalyzer.PRECEDING_SIBLING);
 
     var node, position = 0, filteredNodes = [], iter = nodes.iterator(reversed);
 
@@ -659,8 +657,8 @@ function compareNodes (type, lhs, rhs, comparator) {
   // Neither object is a NodeSet at this point.
 
 
-  if (type === expr_type.EQUALITY ||
-      type === expr_type.INEQUALITY) {
+  if (type === XPathAnalyzer.EQUALITY ||
+      type === XPathAnalyzer.INEQUALITY) {
     if (lhs instanceof XPathBoolean || rhs instanceof XPathBoolean) {
       if (comparator(lhs.asBoolean(), rhs.asBoolean())) {
         return new XPathBoolean(true);
@@ -1300,28 +1298,28 @@ function evaluate$X (rootEvaluator, ast, context, type) {
 }
 
 var Evaluators = {
-  [expr_type.ABSOLUTE_LOCATION_PATH]: evaluate$e,
-  [expr_type.ADDITIVE]: evaluate$f,
-  [expr_type.AND]: evaluate$g,
-  [expr_type.DIVISIONAL]: evaluate$h,
-  [expr_type.EQUALITY]: evaluate$i,
-  [expr_type.FILTER]: evaluate$j,
-  [expr_type.FUNCTION_CALL]: evaluate$J,
-  [expr_type.GREATER_THAN]: evaluate$K,
-  [expr_type.GREATER_THAN_OR_EQUAL]: evaluate$L,
-  [expr_type.INEQUALITY]: evaluate$M,
-  [expr_type.LESS_THAN]: evaluate$N,
-  [expr_type.LESS_THAN_OR_EQUAL]: evaluate$O,
-  [expr_type.LITERAL]: evaluate$P,
-  [expr_type.MODULUS]: evaluate$Q,
-  [expr_type.MULTIPLICATIVE]: evaluate$R,
-  [expr_type.NEGATION]: evaluate$S,
-  [expr_type.NUMBER]: evaluate$T,
-  [expr_type.OR]: evaluate$U,
-  [expr_type.PATH]: evaluate$V,
-  [expr_type.RELATIVE_LOCATION_PATH]: evaluate$d,
-  [expr_type.SUBTRACTIVE]: evaluate$W,
-  [expr_type.UNION]: evaluate$X
+  [XPathAnalyzer.ABSOLUTE_LOCATION_PATH]: evaluate$e,
+  [XPathAnalyzer.ADDITIVE]: evaluate$f,
+  [XPathAnalyzer.AND]: evaluate$g,
+  [XPathAnalyzer.DIVISIONAL]: evaluate$h,
+  [XPathAnalyzer.EQUALITY]: evaluate$i,
+  [XPathAnalyzer.FILTER]: evaluate$j,
+  [XPathAnalyzer.FUNCTION_CALL]: evaluate$J,
+  [XPathAnalyzer.GREATER_THAN]: evaluate$K,
+  [XPathAnalyzer.GREATER_THAN_OR_EQUAL]: evaluate$L,
+  [XPathAnalyzer.INEQUALITY]: evaluate$M,
+  [XPathAnalyzer.LESS_THAN]: evaluate$N,
+  [XPathAnalyzer.LESS_THAN_OR_EQUAL]: evaluate$O,
+  [XPathAnalyzer.LITERAL]: evaluate$P,
+  [XPathAnalyzer.MODULUS]: evaluate$Q,
+  [XPathAnalyzer.MULTIPLICATIVE]: evaluate$R,
+  [XPathAnalyzer.NEGATION]: evaluate$S,
+  [XPathAnalyzer.NUMBER]: evaluate$T,
+  [XPathAnalyzer.OR]: evaluate$U,
+  [XPathAnalyzer.PATH]: evaluate$V,
+  [XPathAnalyzer.RELATIVE_LOCATION_PATH]: evaluate$d,
+  [XPathAnalyzer.SUBTRACTIVE]: evaluate$W,
+  [XPathAnalyzer.UNION]: evaluate$X
 };
 
 function XPathExpression (expression) {
@@ -1335,7 +1333,7 @@ XPathExpression.evaluate = function (ast, context, type) {
 };
 
 XPathExpression.prototype.evaluate = function (context, type, Adapter) {
-  var ast = new XPathAnalyzer(this.expression).parse();
+  var ast = new XPathAnalyzer__default(this.expression).parse();
 
   return XPathExpression.evaluate(ast, new Context(new Adapter(context)), type);
 };
