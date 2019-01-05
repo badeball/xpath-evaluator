@@ -1,6 +1,6 @@
 {
   "name": "xpath-evaluator",
-  "version": "4.0.0-rc1",
+  "version": "4.0.0-rc2",
   "description": "An evaluator for XPath 1.0 expressions.",
   "main": "dist/xpath_evaluator.cjs.js",
   "module": "dist/xpath_evaluator.esm.js",
