@@ -13,7 +13,7 @@
     "prepublishOnly": "make ensure-built"
   },
   "dependencies": {
-    "xpath-analyzer": "^2.0.0-rc1"
+    "xpath-analyzer": "^2.0.0-rc2"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
