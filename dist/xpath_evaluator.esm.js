@@ -395,21 +395,21 @@ function evaluate$b (rootEvaluator, context) {
   return new XPathNodeSet([context.getNode()]);
 }
 
-var Axes = {
-  [ANCESTOR]: evaluate,
-  [ANCESTOR_OR_SELF]: evaluate$1,
-  [ATTRIBUTE]: evaluate$2,
-  [CHILD]: evaluate$3,
-  [DESCENDANT]: evaluate$4,
-  [DESCENDANT_OR_SELF]: evaluate$5,
-  [FOLLOWING]: evaluate$6,
-  [FOLLOWING_SIBLING]: evaluate$7,
-  [NAMESPACE]: Namespace,
-  [PARENT]: evaluate$8,
-  [PRECEDING]: evaluate$9,
-  [PRECEDING_SIBLING]: evaluate$a,
-  [SELF]: evaluate$b
-};
+var Axes = {};
+
+Axes[ANCESTOR] = evaluate;
+Axes[ANCESTOR_OR_SELF] = evaluate$1;
+Axes[ATTRIBUTE] = evaluate$2;
+Axes[CHILD] = evaluate$3;
+Axes[DESCENDANT] = evaluate$4;
+Axes[DESCENDANT_OR_SELF] = evaluate$5;
+Axes[FOLLOWING] = evaluate$6;
+Axes[FOLLOWING_SIBLING] = evaluate$7;
+Axes[NAMESPACE] = Namespace;
+Axes[PARENT] = evaluate$8;
+Axes[PRECEDING] = evaluate$9;
+Axes[PRECEDING_SIBLING] = evaluate$a;
+Axes[SELF] = evaluate$b;
 
 function XPathNumber (value) {
   this.value = value;
@@ -1290,30 +1290,30 @@ function evaluate$X (rootEvaluator, ast, context, type) {
   return lhs.merge(rhs);
 }
 
-var Evaluators = {
-  [ABSOLUTE_LOCATION_PATH]: evaluate$e,
-  [ADDITIVE]: evaluate$f,
-  [AND]: evaluate$g,
-  [DIVISIONAL]: evaluate$h,
-  [EQUALITY]: evaluate$i,
-  [FILTER]: evaluate$j,
-  [FUNCTION_CALL]: evaluate$J,
-  [GREATER_THAN]: evaluate$K,
-  [GREATER_THAN_OR_EQUAL]: evaluate$L,
-  [INEQUALITY]: evaluate$M,
-  [LESS_THAN]: evaluate$N,
-  [LESS_THAN_OR_EQUAL]: evaluate$O,
-  [LITERAL]: evaluate$P,
-  [MODULUS]: evaluate$Q,
-  [MULTIPLICATIVE]: evaluate$R,
-  [NEGATION]: evaluate$S,
-  [NUMBER]: evaluate$T,
-  [OR]: evaluate$U,
-  [PATH]: evaluate$V,
-  [RELATIVE_LOCATION_PATH]: evaluate$d,
-  [SUBTRACTIVE]: evaluate$W,
-  [UNION]: evaluate$X
-};
+var Evaluators = {};
+
+Evaluators[ABSOLUTE_LOCATION_PATH] = evaluate$e;
+Evaluators[ADDITIVE] = evaluate$f;
+Evaluators[AND] = evaluate$g;
+Evaluators[DIVISIONAL] = evaluate$h;
+Evaluators[EQUALITY] = evaluate$i;
+Evaluators[FILTER] = evaluate$j;
+Evaluators[FUNCTION_CALL] = evaluate$J;
+Evaluators[GREATER_THAN] = evaluate$K;
+Evaluators[GREATER_THAN_OR_EQUAL] = evaluate$L;
+Evaluators[INEQUALITY] = evaluate$M;
+Evaluators[LESS_THAN] = evaluate$N;
+Evaluators[LESS_THAN_OR_EQUAL] = evaluate$O;
+Evaluators[LITERAL] = evaluate$P;
+Evaluators[MODULUS] = evaluate$Q;
+Evaluators[MULTIPLICATIVE] = evaluate$R;
+Evaluators[NEGATION] = evaluate$S;
+Evaluators[NUMBER] = evaluate$T;
+Evaluators[OR] = evaluate$U;
+Evaluators[PATH] = evaluate$V;
+Evaluators[RELATIVE_LOCATION_PATH] = evaluate$d;
+Evaluators[SUBTRACTIVE] = evaluate$W;
+Evaluators[UNION] = evaluate$X;
 
 function XPathExpression (expression) {
   this.expression = expression;

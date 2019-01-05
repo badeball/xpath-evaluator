@@ -402,21 +402,21 @@ function evaluate$b (rootEvaluator, context) {
   return new XPathNodeSet([context.getNode()]);
 }
 
-var Axes = {
-  [XPathAnalyzer.ANCESTOR]: evaluate,
-  [XPathAnalyzer.ANCESTOR_OR_SELF]: evaluate$1,
-  [XPathAnalyzer.ATTRIBUTE]: evaluate$2,
-  [XPathAnalyzer.CHILD]: evaluate$3,
-  [XPathAnalyzer.DESCENDANT]: evaluate$4,
-  [XPathAnalyzer.DESCENDANT_OR_SELF]: evaluate$5,
-  [XPathAnalyzer.FOLLOWING]: evaluate$6,
-  [XPathAnalyzer.FOLLOWING_SIBLING]: evaluate$7,
-  [XPathAnalyzer.NAMESPACE]: Namespace,
-  [XPathAnalyzer.PARENT]: evaluate$8,
-  [XPathAnalyzer.PRECEDING]: evaluate$9,
-  [XPathAnalyzer.PRECEDING_SIBLING]: evaluate$a,
-  [XPathAnalyzer.SELF]: evaluate$b
-};
+var Axes = {};
+
+Axes[XPathAnalyzer.ANCESTOR] = evaluate;
+Axes[XPathAnalyzer.ANCESTOR_OR_SELF] = evaluate$1;
+Axes[XPathAnalyzer.ATTRIBUTE] = evaluate$2;
+Axes[XPathAnalyzer.CHILD] = evaluate$3;
+Axes[XPathAnalyzer.DESCENDANT] = evaluate$4;
+Axes[XPathAnalyzer.DESCENDANT_OR_SELF] = evaluate$5;
+Axes[XPathAnalyzer.FOLLOWING] = evaluate$6;
+Axes[XPathAnalyzer.FOLLOWING_SIBLING] = evaluate$7;
+Axes[XPathAnalyzer.NAMESPACE] = Namespace;
+Axes[XPathAnalyzer.PARENT] = evaluate$8;
+Axes[XPathAnalyzer.PRECEDING] = evaluate$9;
+Axes[XPathAnalyzer.PRECEDING_SIBLING] = evaluate$a;
+Axes[XPathAnalyzer.SELF] = evaluate$b;
 
 function XPathNumber (value) {
   this.value = value;
@@ -1297,30 +1297,30 @@ function evaluate$X (rootEvaluator, ast, context, type) {
   return lhs.merge(rhs);
 }
 
-var Evaluators = {
-  [XPathAnalyzer.ABSOLUTE_LOCATION_PATH]: evaluate$e,
-  [XPathAnalyzer.ADDITIVE]: evaluate$f,
-  [XPathAnalyzer.AND]: evaluate$g,
-  [XPathAnalyzer.DIVISIONAL]: evaluate$h,
-  [XPathAnalyzer.EQUALITY]: evaluate$i,
-  [XPathAnalyzer.FILTER]: evaluate$j,
-  [XPathAnalyzer.FUNCTION_CALL]: evaluate$J,
-  [XPathAnalyzer.GREATER_THAN]: evaluate$K,
-  [XPathAnalyzer.GREATER_THAN_OR_EQUAL]: evaluate$L,
-  [XPathAnalyzer.INEQUALITY]: evaluate$M,
-  [XPathAnalyzer.LESS_THAN]: evaluate$N,
-  [XPathAnalyzer.LESS_THAN_OR_EQUAL]: evaluate$O,
-  [XPathAnalyzer.LITERAL]: evaluate$P,
-  [XPathAnalyzer.MODULUS]: evaluate$Q,
-  [XPathAnalyzer.MULTIPLICATIVE]: evaluate$R,
-  [XPathAnalyzer.NEGATION]: evaluate$S,
-  [XPathAnalyzer.NUMBER]: evaluate$T,
-  [XPathAnalyzer.OR]: evaluate$U,
-  [XPathAnalyzer.PATH]: evaluate$V,
-  [XPathAnalyzer.RELATIVE_LOCATION_PATH]: evaluate$d,
-  [XPathAnalyzer.SUBTRACTIVE]: evaluate$W,
-  [XPathAnalyzer.UNION]: evaluate$X
-};
+var Evaluators = {};
+
+Evaluators[XPathAnalyzer.ABSOLUTE_LOCATION_PATH] = evaluate$e;
+Evaluators[XPathAnalyzer.ADDITIVE] = evaluate$f;
+Evaluators[XPathAnalyzer.AND] = evaluate$g;
+Evaluators[XPathAnalyzer.DIVISIONAL] = evaluate$h;
+Evaluators[XPathAnalyzer.EQUALITY] = evaluate$i;
+Evaluators[XPathAnalyzer.FILTER] = evaluate$j;
+Evaluators[XPathAnalyzer.FUNCTION_CALL] = evaluate$J;
+Evaluators[XPathAnalyzer.GREATER_THAN] = evaluate$K;
+Evaluators[XPathAnalyzer.GREATER_THAN_OR_EQUAL] = evaluate$L;
+Evaluators[XPathAnalyzer.INEQUALITY] = evaluate$M;
+Evaluators[XPathAnalyzer.LESS_THAN] = evaluate$N;
+Evaluators[XPathAnalyzer.LESS_THAN_OR_EQUAL] = evaluate$O;
+Evaluators[XPathAnalyzer.LITERAL] = evaluate$P;
+Evaluators[XPathAnalyzer.MODULUS] = evaluate$Q;
+Evaluators[XPathAnalyzer.MULTIPLICATIVE] = evaluate$R;
+Evaluators[XPathAnalyzer.NEGATION] = evaluate$S;
+Evaluators[XPathAnalyzer.NUMBER] = evaluate$T;
+Evaluators[XPathAnalyzer.OR] = evaluate$U;
+Evaluators[XPathAnalyzer.PATH] = evaluate$V;
+Evaluators[XPathAnalyzer.RELATIVE_LOCATION_PATH] = evaluate$d;
+Evaluators[XPathAnalyzer.SUBTRACTIVE] = evaluate$W;
+Evaluators[XPathAnalyzer.UNION] = evaluate$X;
 
 function XPathExpression (expression) {
   this.expression = expression;
