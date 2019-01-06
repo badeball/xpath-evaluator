@@ -1,6 +1,6 @@
 {
   "name": "xpath-evaluator",
-  "version": "4.0.0-rc4",
+  "version": "4.0.0",
   "description": "An evaluator for XPath 1.0 expressions.",
   "main": "dist/xpath_evaluator.cjs.js",
   "module": "dist/xpath_evaluator.esm.js",
@@ -13,7 +13,7 @@
     "prepublishOnly": "make ensure-built"
   },
   "dependencies": {
-    "xpath-analyzer": "^2.0.0-rc3"
+    "xpath-analyzer": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^5.12.0",
