@@ -2,9 +2,7 @@ import Assert from "assert";
 
 import Context from "../../lib/context";
 
-/* eslint-disable no-underscore-dangle */
 import Boolean_ from "../../lib/functions/boolean";
-/* eslint-enable no-underscore-dangle */
 
 import XPathNodeSet from "../../lib/types/xpath_node_set";
 

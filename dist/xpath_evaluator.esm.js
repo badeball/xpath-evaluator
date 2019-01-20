@@ -27,8 +27,6 @@ var PROCESSING_INSTRUCTION_NODE = 7;
 var COMMENT_NODE = 8;
 var DOCUMENT_NODE = 9;
 
-/* eslint-disable no-underscore-dangle */
-
 function Iterator (list, reversed) {
   this.list = list;
   this.reversed = reversed;
@@ -80,8 +78,6 @@ Iterator.prototype.remove = function () {
   this.lastReturned = null;
   this.list.length_--;
 };
-
-/* eslint-disable no-underscore-dangle */
 
 function Entry (node) {
   this.node = node;
@@ -1113,9 +1109,6 @@ function evaluate$I () {
   return new XPathBoolean(true);
 }
 
-/* eslint-disable no-underscore-dangle */
-
-/* eslint-disable dot-notation */
 var Functions = {
   "boolean": evaluate$k,
   "ceiling": evaluate$l,
@@ -1143,7 +1136,6 @@ var Functions = {
   "translate": evaluate$H,
   "true": evaluate$I
 };
-/* eslint-enable dot-notation */
 
 function evaluate$J (rootEvaluator, ast, context, type) {
   var args = (ast.args || []).map(function (arg) {

@@ -16,7 +16,6 @@
     "xpath-analyzer": "^2.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.12.0",
     "esm": "^3.0.84",
     "mocha": "^5.2.0",
     "rollup": "^1.0.1"
