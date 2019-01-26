@@ -7,278 +7,286 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var XPathAnalyzer = require('xpath-analyzer');
 var XPathAnalyzer__default = _interopDefault(XPathAnalyzer);
 
-function Context (node, position, last) {
-  this.node = node;
-  this.position = position;
-  this.last = last;
+class Context {
+  constructor(node, position, last) {
+    this.node = node;
+    this.position = position;
+    this.last = last;
+  }
+
+  getNode() {
+    return this.node;
+  }
+
+  getPosition() {
+    return this.position;
+  }
+
+  getLast() {
+    return this.last;
+  }
+
+  toString() {
+    return "Context<" + this.node + ">";
+  }
 }
-
-Context.prototype.getNode = function () {
-  return this.node;
-};
-
-Context.prototype.getPosition = function () {
-  return this.position;
-};
-
-Context.prototype.getLast = function () {
-  return this.last;
-};
-
-Context.prototype.toString = function () {
-  return "Context<" + this.node + ">";
-};
 
 var TEXT_NODE = 3;
 var PROCESSING_INSTRUCTION_NODE = 7;
 var COMMENT_NODE = 8;
 var DOCUMENT_NODE = 9;
 
-function Iterator (list, reversed) {
-  this.list = list;
-  this.reversed = reversed;
-  this.current = reversed ? list.last_ : list.first_;
-  this.lastReturned = null;
-  this.i = 0;
-}
-
-Iterator.prototype.next = function () {
-  this.i++;
-
-  if (this.i > 10000) {
-    throw new Error("An error has probably ocurred!");
+class Iterator {
+  constructor(list, reversed) {
+    this.list = list;
+    this.reversed = reversed;
+    this.current = reversed ? list.last_ : list.first_;
+    this.lastReturned = null;
+    this.i = 0;
   }
 
-  if (this.current) {
-    this.lastReturned = this.current;
+  next() {
+    this.i++;
 
-    if (this.reversed) {
-      this.current = this.current.previous;
-    } else {
-      this.current = this.current.next;
+    if (this.i > 10000) {
+      throw new Error("An error has probably ocurred!");
     }
 
-    return this.lastReturned.node;
-  }
-};
+    if (this.current) {
+      this.lastReturned = this.current;
 
-Iterator.prototype.remove = function () {
-  if (!this.lastReturned) {
-    throw new Error("remove was called before iterating!");
-  }
-
-  var next = this.lastReturned.next,
-      previous = this.lastReturned.previous;
-
-  if (next) {
-    next.previous = previous;
-  } else {
-    this.list.last_ = previous;
-  }
-
-  if (previous) {
-    previous.next = next;
-  } else {
-    this.list.first_ = next;
-  }
-
-  this.lastReturned = null;
-  this.list.length_--;
-};
-
-function Entry (node) {
-  this.node = node;
-}
-
-function XPathNodeSet (value) {
-  this.first_ = null;
-  this.last_ = null;
-  this.length_ = 0;
-
-  if (value) {
-    value.forEach(function (node) {
-      this.push(node);
-    }, this);
-  }
-}
-
-XPathNodeSet.prototype.iterator = function (reversed) {
-  return new Iterator(this, reversed);
-};
-
-XPathNodeSet.prototype.first = function () {
-  return this.first_.node;
-};
-
-XPathNodeSet.prototype.last = function () {
-  return this.last_.node;
-};
-
-XPathNodeSet.prototype.length = function () {
-  return this.length_;
-};
-
-XPathNodeSet.prototype.empty = function () {
-  return this.length() === 0;
-};
-
-XPathNodeSet.prototype.asString = function () {
-  if (this.empty()) {
-    return "";
-  } else {
-    return this.first().asString();
-  }
-};
-
-XPathNodeSet.prototype.asNumber = function () {
-  return +this.asString();
-};
-
-XPathNodeSet.prototype.asBoolean = function () {
-  return this.length() !== 0;
-};
-
-XPathNodeSet.prototype.merge = function (b) {
-  return XPathNodeSet.merge(this, b);
-};
-
-XPathNodeSet.prototype.push = function (node) {
-  var entry = new Entry(node);
-
-  entry.next = null;
-  entry.previous = this.last_;
-
-  if (this.first_) {
-    this.last_.next = entry;
-  } else {
-    this.first_ = entry;
-  }
-
-  this.last_ = entry;
-  this.length_++;
-
-  return this;
-};
-
-XPathNodeSet.prototype.unshift = function (node) {
-  var entry = new Entry(node);
-
-  entry.previous = null;
-  entry.next = this.first_;
-
-  if (this.first_) {
-    this.first_.previous = entry;
-  } else {
-    this.last_ = entry;
-  }
-
-  this.first_ = entry;
-  this.length_++;
-
-  return this;
-};
-
-XPathNodeSet.prototype.filter = function (condition) {
-  var node, iter = this.iterator();
-
-  while ((node = iter.next())) {
-    if (!condition(node)) {
-      iter.remove();
-    }
-  }
-
-  return this;
-};
-
-XPathNodeSet.merge = function (a, b) {
-  if (!a.first_) {
-    return b;
-  } else if (!b.first_) {
-    return a;
-  }
-
-  var aCurr = a.first_;
-  var bCurr = b.first_;
-  var merged = a, tail = null, next = null, length = 0;
-
-  while (aCurr && bCurr) {
-    if (aCurr.node.isEqual(bCurr.node)) {
-      next = aCurr;
-      aCurr = aCurr.next;
-      bCurr = bCurr.next;
-    } else {
-      var compareResult = aCurr.node.compareDocumentPosition(bCurr.node);
-
-      if (compareResult > 0) {
-        next = bCurr;
-        bCurr = bCurr.next;
+      if (this.reversed) {
+        this.current = this.current.previous;
       } else {
-        next = aCurr;
-        aCurr = aCurr.next;
+        this.current = this.current.next;
+      }
+
+      return this.lastReturned.node;
+    }
+  }
+
+  remove() {
+    if (!this.lastReturned) {
+      throw new Error("remove was called before iterating!");
+    }
+  
+    var next = this.lastReturned.next,
+        previous = this.lastReturned.previous;
+  
+    if (next) {
+      next.previous = previous;
+    } else {
+      this.list.last_ = previous;
+    }
+  
+    if (previous) {
+      previous.next = next;
+    } else {
+      this.list.first_ = next;
+    }
+  
+    this.lastReturned = null;
+    this.list.length_--;
+  }
+}
+
+class Entry {
+  constructor(node) {
+    this.node = node;
+  }
+}
+
+class XPathNodeSet {
+  constructor(value) {
+    this.first_ = null;
+    this.last_ = null;
+    this.length_ = 0;
+
+    if (value) {
+      value.forEach(function (node) {
+        this.push(node);
+      }, this);
+    }
+  }
+
+  iterator(reversed) {
+    return new Iterator(this, reversed);
+  }
+
+  first() {
+    return this.first_.node;
+  }
+
+  last() {
+    return this.last_.node;
+  }
+
+  length() {
+    return this.length_;
+  }
+
+  empty() {
+    return this.length() === 0;
+  }
+
+  asString() {
+    if (this.empty()) {
+      return "";
+    } else {
+      return this.first().asString();
+    }
+  }
+
+  asNumber() {
+    return +this.asString();
+  }
+
+  asBoolean() {
+    return this.length() !== 0;
+  }
+
+  merge(b) {
+    return XPathNodeSet.merge(this, b);
+  }
+
+  push(node) {
+    var entry = new Entry(node);
+
+    entry.next = null;
+    entry.previous = this.last_;
+
+    if (this.first_) {
+      this.last_.next = entry;
+    } else {
+      this.first_ = entry;
+    }
+
+    this.last_ = entry;
+    this.length_++;
+
+    return this;
+  }
+
+  unshift(node) {
+    var entry = new Entry(node);
+
+    entry.previous = null;
+    entry.next = this.first_;
+
+    if (this.first_) {
+      this.first_.previous = entry;
+    } else {
+      this.last_ = entry;
+    }
+
+    this.first_ = entry;
+    this.length_++;
+
+    return this;
+  }
+
+  filter(condition) {
+    var node, iter = this.iterator();
+
+    while ((node = iter.next())) {
+      if (!condition(node)) {
+        iter.remove();
       }
     }
 
-    next.previous = tail;
+    return this;
+  }
 
-    if (tail) {
-      tail.next = next;
-    } else {
-      merged.first_ = next;
+  static merge(a, b) {
+    if (!a.first_) {
+      return b;
+    } else if (!b.first_) {
+      return a;
     }
 
-    tail = next;
-    length++;
+    var aCurr = a.first_;
+    var bCurr = b.first_;
+    var merged = a, tail = null, next = null, length = 0;
+
+    while (aCurr && bCurr) {
+      if (aCurr.node.isEqual(bCurr.node)) {
+        next = aCurr;
+        aCurr = aCurr.next;
+        bCurr = bCurr.next;
+      } else {
+        var compareResult = aCurr.node.compareDocumentPosition(bCurr.node);
+
+        if (compareResult > 0) {
+          next = bCurr;
+          bCurr = bCurr.next;
+        } else {
+          next = aCurr;
+          aCurr = aCurr.next;
+        }
+      }
+
+      next.previous = tail;
+
+      if (tail) {
+        tail.next = next;
+      } else {
+        merged.first_ = next;
+      }
+
+      tail = next;
+      length++;
+    }
+
+    next = aCurr || bCurr;
+
+    while (next) {
+      next.previous = tail;
+      tail.next = next;
+      tail = next;
+      length++;
+      next = next.next;
+    }
+
+    merged.last_ = tail;
+    merged.length_ = length;
+
+    return merged;
   }
 
-  next = aCurr || bCurr;
+  static mergeWithoutOrder(a, b) {
+    var nodes = [], node, iter = a.iterator();
 
-  while (next) {
-    next.previous = tail;
-    tail.next = next;
-    tail = next;
-    length++;
-    next = next.next;
-  }
-
-  merged.last_ = tail;
-  merged.length_ = length;
-
-  return merged;
-};
-
-XPathNodeSet.mergeWithoutOrder = function (a, b) {
-  var nodes = [], node, iter = a.iterator();
-
-  while ((node = iter.next())) {
-    nodes.push(node);
-  }
-
-  iter = b.iterator();
-
-  while ((node = iter.next())) {
-    var keep = nodes.every(function (addedNode) {
-      return !addedNode.isEqual(node);
-    });
-
-    if (keep) {
+    while ((node = iter.next())) {
       nodes.push(node);
     }
+
+    iter = b.iterator();
+
+    while ((node = iter.next())) {
+      var keep = nodes.every(function (addedNode) {
+        return !addedNode.isEqual(node);
+      });
+
+      if (keep) {
+        nodes.push(node);
+      }
+    }
+
+    return new XPathNodeSet(nodes);
   }
 
-  return new XPathNodeSet(nodes);
-};
+  toString() {
+    var node, iter = this.iterator();
 
-XPathNodeSet.prototype.toString = function () {
-  var node, iter = this.iterator();
+    var nodes = [];
 
-  var nodes = [];
+    while ((node = iter.next())) {
+      nodes.push("" + node);
+    }
 
-  while ((node = iter.next())) {
-    nodes.push("" + node);
+    return "NodeSet<" + nodes.join(", ") + ">";
   }
-
-  return "NodeSet<" + nodes.join(", ") + ">";
-};
+}
 
 function evaluate(rootEvaluator, context) {
   var nodes = new XPathNodeSet();
@@ -414,21 +422,23 @@ Axes[XPathAnalyzer.PRECEDING] = evaluate$9;
 Axes[XPathAnalyzer.PRECEDING_SIBLING] = evaluate$a;
 Axes[XPathAnalyzer.SELF] = evaluate$b;
 
-function XPathNumber (value) {
-  this.value = value;
+class XPathNumber {
+  constructor(value) {
+    this.value = value;
+  }
+
+  asString() {
+    return "" + this.value;
+  }
+
+  asNumber() {
+    return this.value;
+  }
+
+  asBoolean() {
+    return !!this.value;
+  }
 }
-
-XPathNumber.prototype.asString = function () {
-  return "" + this.value;
-};
-
-XPathNumber.prototype.asNumber = function () {
-  return this.value;
-};
-
-XPathNumber.prototype.asBoolean = function () {
-  return !!this.value;
-};
 
 function evaluate$c (rootEvaluator, step, context, type) {
   var nodes;
@@ -549,21 +559,23 @@ function evaluate$f (rootEvaluator, ast, context, type) {
   return new XPathNumber(lhs.asNumber() + rhs.asNumber());
 }
 
-function XPathBoolean (value) {
-  this.value = value;
+class XPathBoolean {
+  constructor(value) {
+    this.value = value;
+  }
+
+  asString() {
+    return "" + this.value;
+  }
+
+  asNumber() {
+    return this.value ? 1 : 0;
+  }
+
+  asBoolean() {
+    return this.value;
+  }
 }
-
-XPathBoolean.prototype.asString = function () {
-  return "" + this.value;
-};
-
-XPathBoolean.prototype.asNumber = function () {
-  return this.value ? 1 : 0;
-};
-
-XPathBoolean.prototype.asBoolean = function () {
-  return this.value;
-};
 
 function evaluate$g (rootEvaluator, ast, context, type) {
   var lhs = rootEvaluator.evaluate(ast.lhs, context, type);
@@ -583,21 +595,23 @@ function evaluate$h (rootEvaluator, ast, context, type) {
   return new XPathNumber(lhs.asNumber() / rhs.asNumber());
 }
 
-function XPathString (value) {
-  this.value = value;
+class XPathString {
+  constructor(value) {
+    this.value = value;
+  }
+
+  asString() {
+    return this.value;
+  }
+
+  asNumber() {
+    return +this.value;
+  }
+
+  asBoolean() {
+    return this.value.length !== 0;
+  }
 }
-
-XPathString.prototype.asString = function () {
-  return this.value;
-};
-
-XPathString.prototype.asNumber = function () {
-  return +this.value;
-};
-
-XPathString.prototype.asBoolean = function () {
-  return this.value.length !== 0;
-};
 
 function compareNodes (type, lhs, rhs, comparator) {
   if (lhs instanceof XPathNodeSet && rhs instanceof XPathNodeSet) {
@@ -1314,25 +1328,29 @@ Evaluators[XPathAnalyzer.RELATIVE_LOCATION_PATH] = evaluate$d;
 Evaluators[XPathAnalyzer.SUBTRACTIVE] = evaluate$W;
 Evaluators[XPathAnalyzer.UNION] = evaluate$X;
 
-function XPathExpression (expression) {
-  this.expression = expression;
+class XPathExpression {
+  constructor(expression) {
+    this.expression = expression;
+  }
+
+  evaluate(context, type, Adapter) {
+    var ast = new XPathAnalyzer__default(this.expression).parse();
+  
+    return XPathExpression.evaluate(ast, new Context(new Adapter(context)), type);
+  }
+
+  static evaluate(ast, context, type) {
+    var evaluator = Evaluators[ast.type];
+
+    return evaluator(XPathExpression, ast, context, type);
+  }
 }
 
-XPathExpression.evaluate = function (ast, context, type) {
-  var evaluator = Evaluators[ast.type];
-
-  return evaluator(XPathExpression, ast, context, type);
-};
-
-XPathExpression.prototype.evaluate = function (context, type, Adapter) {
-  var ast = new XPathAnalyzer__default(this.expression).parse();
-
-  return XPathExpression.evaluate(ast, new Context(new Adapter(context)), type);
-};
-
-function XPathException (code, message) {
-  this.code = code;
-  this.message = message;
+class XPathException {
+  constructor(code, message) {
+    this.code = code;
+    this.message = message;
+  }
 }
 
 var TYPE_ERR = 52;
@@ -1348,145 +1366,147 @@ var ORDERED_NODE_SNAPSHOT_TYPE = 7;
 var ANY_UNORDERED_NODE_TYPE = 8;
 var FIRST_ORDERED_NODE_TYPE = 9;
 
-function XPathResult (type, value) {
-  this.value = value;
+class XPathResult {
+  constructor(type, value) {
+    this.value = value;
 
-  if (type === ANY_TYPE) {
-    if (value instanceof XPathNodeSet) {
-      this.resultType = UNORDERED_NODE_ITERATOR_TYPE;
-    } else if (value instanceof XPathString) {
-      this.resultType = STRING_TYPE;
-    } else if (value instanceof XPathNumber) {
-      this.resultType = NUMBER_TYPE;
-    } else if (value instanceof XPathBoolean) {
-      this.resultType = BOOLEAN_TYPE;
+    if (type === ANY_TYPE) {
+      if (value instanceof XPathNodeSet) {
+        this.resultType = UNORDERED_NODE_ITERATOR_TYPE;
+      } else if (value instanceof XPathString) {
+        this.resultType = STRING_TYPE;
+      } else if (value instanceof XPathNumber) {
+        this.resultType = NUMBER_TYPE;
+      } else if (value instanceof XPathBoolean) {
+        this.resultType = BOOLEAN_TYPE;
+      } else {
+        throw new Error("Unexpected evaluation result");
+      }
     } else {
-      throw new Error("Unexpected evaluation result");
+      this.resultType = type;
     }
-  } else {
-    this.resultType = type;
+
+    if (this.resultType !== STRING_TYPE &&
+        this.resultType !== NUMBER_TYPE &&
+        this.resultType !== BOOLEAN_TYPE &&
+        !(value instanceof XPathNodeSet)) {
+      throw Error("Value could not be converted to the specified type");
+    }
+
+    if (this.resultType === UNORDERED_NODE_ITERATOR_TYPE ||
+        this.resultType === ORDERED_NODE_ITERATOR_TYPE ||
+        this.resultType === UNORDERED_NODE_SNAPSHOT_TYPE ||
+        this.resultType === ORDERED_NODE_SNAPSHOT_TYPE) {
+      this.nodes = [];
+
+      var node, iter = this.value.iterator();
+
+      while ((node = iter.next())) {
+        this.nodes.push(node.getNativeNode());
+      }
+    }
+
+    var self = this;
+
+    var hasDefineProperty = true;
+
+    try {
+      Object.defineProperty({}, "x", {});
+    } catch (e) {
+      hasDefineProperty = false;
+    }
+
+    if (hasDefineProperty) {
+      Object.defineProperty(this, "numberValue", {get: function () {
+        if (self.resultType !== NUMBER_TYPE) {
+          throw new XPathException(TYPE_ERR, "resultType is not NUMBER_TYPE");
+        }
+
+        return self.value.asNumber();
+      }});
+
+      Object.defineProperty(this, "stringValue", {get: function () {
+        if (self.resultType !== STRING_TYPE) {
+          throw new XPathException(TYPE_ERR, "resultType is not STRING_TYPE");
+        }
+
+        return self.value.asString();
+      }});
+
+      Object.defineProperty(this, "booleanValue", {get: function () {
+        if (self.resultType !== BOOLEAN_TYPE) {
+          throw new XPathException(TYPE_ERR, "resultType is not BOOLEAN_TYPE");
+        }
+
+        return self.value.asBoolean();
+      }});
+
+      Object.defineProperty(this, "singleNodeValue", {get: function () {
+        if (self.resultType !== FIRST_ORDERED_NODE_TYPE &&
+            self.resultType !== ANY_UNORDERED_NODE_TYPE) {
+          throw new XPathException(TYPE_ERR, "resultType is not a node set");
+        }
+
+        return self.value.empty() ? null : self.value.first().getNativeNode();
+      }});
+
+      Object.defineProperty(this, "invalidIteratorState", {get: function () {
+        throw new Error("invalidIteratorState is not implemented");
+      }});
+
+      Object.defineProperty(this, "snapshotLength", {get: function () {
+        if (self.resultType !== ORDERED_NODE_SNAPSHOT_TYPE &&
+            self.resultType !== UNORDERED_NODE_SNAPSHOT_TYPE) {
+          throw new XPathException(TYPE_ERR, "resultType is not a node set");
+        }
+
+        return self.value.length();
+      }});
+    } else {
+      if (self.resultType === NUMBER_TYPE) {
+        self.numberValue = self.value.asNumber();
+      }
+
+      if (self.resultType === STRING_TYPE) {
+        self.stringValue = self.value.asString();
+      }
+
+      if (self.resultType === BOOLEAN_TYPE) {
+        self.booleanValue = self.value.asBoolean();
+      }
+
+      if (self.resultType === FIRST_ORDERED_NODE_TYPE ||
+          self.resultType === ANY_UNORDERED_NODE_TYPE) {
+        self.singleNodeValue = self.value.empty() ? null : self.value.first().getNativeNode();
+      }
+
+      if (self.resultType === ORDERED_NODE_SNAPSHOT_TYPE ||
+          self.resultType === UNORDERED_NODE_SNAPSHOT_TYPE) {
+        self.snapshotLength = self.value.length();
+      }
+    }
   }
 
-  if (this.resultType !== STRING_TYPE &&
-      this.resultType !== NUMBER_TYPE &&
-      this.resultType !== BOOLEAN_TYPE &&
-      !(value instanceof XPathNodeSet)) {
-    throw Error("Value could not be converted to the specified type");
+  iterateNext() {
+    if (this.resultType !== ORDERED_NODE_ITERATOR_TYPE &&
+        this.resultType !== UNORDERED_NODE_ITERATOR_TYPE) {
+      throw new XPathException(TYPE_ERR, "iterateNext called with wrong result type");
+    }
+
+    this.index = this.index || 0;
+
+    return (this.index >= this.nodes.length) ? null : this.nodes[this.index++];
   }
 
-  if (this.resultType === UNORDERED_NODE_ITERATOR_TYPE ||
-      this.resultType === ORDERED_NODE_ITERATOR_TYPE ||
-      this.resultType === UNORDERED_NODE_SNAPSHOT_TYPE ||
-      this.resultType === ORDERED_NODE_SNAPSHOT_TYPE) {
-    this.nodes = [];
-
-    var node, iter = this.value.iterator();
-
-    while ((node = iter.next())) {
-      this.nodes.push(node.getNativeNode());
-    }
-  }
-
-  var self = this;
-
-  var hasDefineProperty = true;
-
-  try {
-    Object.defineProperty({}, "x", {});
-  } catch (e) {
-    hasDefineProperty = false;
-  }
-
-  if (hasDefineProperty) {
-    Object.defineProperty(this, "numberValue", {get: function () {
-      if (self.resultType !== NUMBER_TYPE) {
-        throw new XPathException(TYPE_ERR, "resultType is not NUMBER_TYPE");
-      }
-
-      return self.value.asNumber();
-    }});
-
-    Object.defineProperty(this, "stringValue", {get: function () {
-      if (self.resultType !== STRING_TYPE) {
-        throw new XPathException(TYPE_ERR, "resultType is not STRING_TYPE");
-      }
-
-      return self.value.asString();
-    }});
-
-    Object.defineProperty(this, "booleanValue", {get: function () {
-      if (self.resultType !== BOOLEAN_TYPE) {
-        throw new XPathException(TYPE_ERR, "resultType is not BOOLEAN_TYPE");
-      }
-
-      return self.value.asBoolean();
-    }});
-
-    Object.defineProperty(this, "singleNodeValue", {get: function () {
-      if (self.resultType !== FIRST_ORDERED_NODE_TYPE &&
-          self.resultType !== ANY_UNORDERED_NODE_TYPE) {
-        throw new XPathException(TYPE_ERR, "resultType is not a node set");
-      }
-
-      return self.value.empty() ? null : self.value.first().getNativeNode();
-    }});
-
-    Object.defineProperty(this, "invalidIteratorState", {get: function () {
-      throw new Error("invalidIteratorState is not implemented");
-    }});
-
-    Object.defineProperty(this, "snapshotLength", {get: function () {
-      if (self.resultType !== ORDERED_NODE_SNAPSHOT_TYPE &&
-          self.resultType !== UNORDERED_NODE_SNAPSHOT_TYPE) {
-        throw new XPathException(TYPE_ERR, "resultType is not a node set");
-      }
-
-      return self.value.length();
-    }});
-  } else {
-    if (self.resultType === NUMBER_TYPE) {
-      self.numberValue = self.value.asNumber();
+  snapshotItem(index) {
+    if (this.resultType !== ORDERED_NODE_SNAPSHOT_TYPE &&
+        this.resultType !== UNORDERED_NODE_SNAPSHOT_TYPE) {
+      throw new XPathException(TYPE_ERR, "snapshotItem called with wrong result type");
     }
 
-    if (self.resultType === STRING_TYPE) {
-      self.stringValue = self.value.asString();
-    }
-
-    if (self.resultType === BOOLEAN_TYPE) {
-      self.booleanValue = self.value.asBoolean();
-    }
-
-    if (self.resultType === FIRST_ORDERED_NODE_TYPE ||
-        self.resultType === ANY_UNORDERED_NODE_TYPE) {
-      self.singleNodeValue = self.value.empty() ? null : self.value.first().getNativeNode();
-    }
-
-    if (self.resultType === ORDERED_NODE_SNAPSHOT_TYPE ||
-        self.resultType === UNORDERED_NODE_SNAPSHOT_TYPE) {
-      self.snapshotLength = self.value.length();
-    }
+    return this.nodes[index] || null;
   }
 }
-
-XPathResult.prototype.iterateNext = function () {
-  if (this.resultType !== ORDERED_NODE_ITERATOR_TYPE &&
-      this.resultType !== UNORDERED_NODE_ITERATOR_TYPE) {
-    throw new XPathException(TYPE_ERR, "iterateNext called with wrong result type");
-  }
-
-  this.index = this.index || 0;
-
-  return (this.index >= this.nodes.length) ? null : this.nodes[this.index++];
-};
-
-XPathResult.prototype.snapshotItem = function (index) {
-  if (this.resultType !== ORDERED_NODE_SNAPSHOT_TYPE &&
-      this.resultType !== UNORDERED_NODE_SNAPSHOT_TYPE) {
-    throw new XPathException(TYPE_ERR, "snapshotItem called with wrong result type");
-  }
-
-  return this.nodes[index] || null;
-};
 
 XPathResult.ANY_TYPE = ANY_TYPE;
 XPathResult.NUMBER_TYPE = NUMBER_TYPE;
@@ -1503,31 +1523,33 @@ function throwNotImplemented () {
   throw new Error("Namespaces are not implemented");
 }
 
-function XPathEvaluator (adapter) {
-  this.adapter = adapter;
+class XPathEvaluator {
+  constructor(adapter) {
+    this.adapter = adapter;
+  }
+
+  evaluate(expression, context, nsResolver, type) {
+    if (nsResolver) {
+      throwNotImplemented();
+    }
+  
+    var value = this.createExpression(expression).evaluate(context, type, this.adapter);
+  
+    return new XPathResult(type, value);
+  }
+
+  createExpression(expression, nsResolver) {
+    if (nsResolver) {
+      throwNotImplemented();
+    }
+  
+    return new XPathExpression(expression);
+  }
+
+  createNSResolver() {
+    throwNotImplemented();
+  }
 }
-
-XPathEvaluator.prototype.evaluate = function (expression, context, nsResolver, type) {
-  if (nsResolver) {
-    throwNotImplemented();
-  }
-
-  var value = this.createExpression(expression).evaluate(context, type, this.adapter);
-
-  return new XPathResult(type, value);
-};
-
-XPathEvaluator.prototype.createExpression = function (expression, nsResolver) {
-  if (nsResolver) {
-    throwNotImplemented();
-  }
-
-  return new XPathExpression(expression);
-};
-
-XPathEvaluator.prototype.createNSResolver = function () {
-  throwNotImplemented();
-};
 
 exports.default = XPathEvaluator;
 exports.XPathResult = XPathResult;
