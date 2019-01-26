@@ -40,7 +40,7 @@ class Iterator {
   constructor(list, reversed) {
     this.list = list;
     this.reversed = reversed;
-    this.current = reversed ? list.last_ : list.first_;
+    this.current = reversed ? list.tail_ : list.head_;
     this.lastReturned = null;
     this.i = 0;
   }
@@ -69,41 +69,41 @@ class Iterator {
     if (!this.lastReturned) {
       throw new Error("remove was called before iterating!");
     }
-  
+
     var next = this.lastReturned.next,
         previous = this.lastReturned.previous;
-  
+
     if (next) {
       next.previous = previous;
     } else {
-      this.list.last_ = previous;
+      this.list.tail_ = previous;
     }
-  
+
     if (previous) {
       previous.next = next;
     } else {
-      this.list.first_ = next;
+      this.list.head_ = next;
     }
-  
+
     this.lastReturned = null;
     this.list.length_--;
   }
 }
 
-class Entry {
+class NodeWrapper {
   constructor(node) {
     this.node = node;
   }
 }
 
-class XPathNodeSet {
-  constructor(value) {
-    this.first_ = null;
-    this.last_ = null;
+class LinkedList {
+  constructor(nodes) {
+    this.head_ = null;
+    this.tail_ = null;
     this.length_ = 0;
 
-    if (value) {
-      value.forEach(function (node) {
+    if (nodes) {
+      nodes.forEach(function (node) {
         this.push(node);
       }, this);
     }
@@ -113,12 +113,12 @@ class XPathNodeSet {
     return new Iterator(this, reversed);
   }
 
-  first() {
-    return this.first_.node;
+  head() {
+    return this.head_;
   }
 
-  last() {
-    return this.last_.node;
+  tail() {
+    return this.tail_;
   }
 
   length() {
@@ -126,60 +126,40 @@ class XPathNodeSet {
   }
 
   empty() {
-    return this.length() === 0;
-  }
-
-  asString() {
-    if (this.empty()) {
-      return "";
-    } else {
-      return this.first().asString();
-    }
-  }
-
-  asNumber() {
-    return +this.asString();
-  }
-
-  asBoolean() {
-    return this.length() !== 0;
-  }
-
-  merge(b) {
-    return XPathNodeSet.merge(this, b);
+    return this.length_ === 0;
   }
 
   push(node) {
-    var entry = new Entry(node);
+    var entry = new NodeWrapper(node);
 
     entry.next = null;
-    entry.previous = this.last_;
+    entry.previous = this.tail_;
 
-    if (this.first_) {
-      this.last_.next = entry;
+    if (this.head_) {
+      this.tail_.next = entry;
     } else {
-      this.first_ = entry;
+      this.head_ = entry;
     }
 
-    this.last_ = entry;
+    this.tail_ = entry;
     this.length_++;
 
     return this;
   }
 
   unshift(node) {
-    var entry = new Entry(node);
+    var entry = new NodeWrapper(node);
 
     entry.previous = null;
-    entry.next = this.first_;
+    entry.next = this.head_;
 
-    if (this.first_) {
-      this.first_.previous = entry;
+    if (this.head_) {
+      this.head_.previous = entry;
     } else {
-      this.last_ = entry;
+      this.tail_ = entry;
     }
 
-    this.first_ = entry;
+    this.head_ = entry;
     this.length_++;
 
     return this;
@@ -196,16 +176,46 @@ class XPathNodeSet {
 
     return this;
   }
+}
+
+class XPathNodeSet extends LinkedList {
+  asString() {
+    if (this.empty()) {
+      return "";
+    } else {
+      return this.first().asString();
+    }
+  }
+
+  first() {
+    return super.head().node;
+  }
+
+  last() {
+    return super.tail().node;
+  }
+
+  asNumber() {
+    return +this.asString();
+  }
+
+  asBoolean() {
+    return this.length() !== 0;
+  }
+
+  merge(b) {
+    return XPathNodeSet.merge(this, b);
+  }
 
   static merge(a, b) {
-    if (!a.first_) {
+    if (!a.head_) {
       return b;
-    } else if (!b.first_) {
+    } else if (!b.head_) {
       return a;
     }
 
-    var aCurr = a.first_;
-    var bCurr = b.first_;
+    var aCurr = a.head_;
+    var bCurr = b.head_;
     var merged = a, tail = null, next = null, length = 0;
 
     while (aCurr && bCurr) {
@@ -230,7 +240,7 @@ class XPathNodeSet {
       if (tail) {
         tail.next = next;
       } else {
-        merged.first_ = next;
+        merged.head_ = next;
       }
 
       tail = next;
@@ -247,7 +257,7 @@ class XPathNodeSet {
       next = next.next;
     }
 
-    merged.last_ = tail;
+    merged.tail_ = tail;
     merged.length_ = length;
 
     return merged;
