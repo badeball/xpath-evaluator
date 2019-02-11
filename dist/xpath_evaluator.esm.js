@@ -857,7 +857,7 @@ function evaluate$t (context, nodeset) {
   }
 
   if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+    throw new Error("Expected at most one argument");
   }
 
   if (!(nodeset instanceof XPathNodeSet)) {
@@ -876,7 +876,7 @@ function evaluate$u (context, nodeset) {
     return new XPathString(context.getNode().getName());
   } else {
     if (arguments.length > 2) {
-      throw new Error("Unknown argument(s)");
+      throw new Error("Expected at most one argument");
     }
 
     if (!(nodeset instanceof XPathNodeSet)) {
@@ -898,7 +898,7 @@ function evaluate$v (context, value) {
     string = context.getNode().asString();
   } else {
     if (arguments.length > 2) {
-      throw new Error("Unknown argument(s)");
+      throw new Error("Expected at most one argument");
     }
 
     string = value.asString();
@@ -958,7 +958,7 @@ function evaluate$B (context, string) {
     string = context.getNode().asString();
   } else {
     if (arguments.length > 2) {
-      throw new Error("Unknown argument(s)");
+      throw new Error("Expected at most one argument");
     }
 
     if (!(string instanceof XPathString)) {
@@ -977,7 +977,7 @@ function evaluate$C (context, value) {
   }
 
   if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+    throw new Error("Expected at most one argument");
   }
 
   return new XPathString(value.asString());
