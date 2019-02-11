@@ -31,10 +31,10 @@ class Context {
   }
 }
 
-var TEXT_NODE = 3;
-var PROCESSING_INSTRUCTION_NODE = 7;
-var COMMENT_NODE = 8;
-var DOCUMENT_NODE = 9;
+const TEXT_NODE = 3;
+const PROCESSING_INSTRUCTION_NODE = 7;
+const COMMENT_NODE = 8;
+const DOCUMENT_NODE = 9;
 
 class Iterator {
   constructor(list, reversed) {
@@ -1363,18 +1363,18 @@ class XPathException {
   }
 }
 
-var TYPE_ERR = 52;
+const TYPE_ERR = 52;
 
-var ANY_TYPE = 0;
-var NUMBER_TYPE = 1;
-var STRING_TYPE = 2;
-var BOOLEAN_TYPE = 3;
-var UNORDERED_NODE_ITERATOR_TYPE = 4;
-var ORDERED_NODE_ITERATOR_TYPE = 5;
-var UNORDERED_NODE_SNAPSHOT_TYPE = 6;
-var ORDERED_NODE_SNAPSHOT_TYPE = 7;
-var ANY_UNORDERED_NODE_TYPE = 8;
-var FIRST_ORDERED_NODE_TYPE = 9;
+const ANY_TYPE = 0;
+const NUMBER_TYPE = 1;
+const STRING_TYPE = 2;
+const BOOLEAN_TYPE = 3;
+const UNORDERED_NODE_ITERATOR_TYPE = 4;
+const ORDERED_NODE_ITERATOR_TYPE = 5;
+const UNORDERED_NODE_SNAPSHOT_TYPE = 6;
+const ORDERED_NODE_SNAPSHOT_TYPE = 7;
+const ANY_UNORDERED_NODE_TYPE = 8;
+const FIRST_ORDERED_NODE_TYPE = 9;
 
 class XPathResult {
   constructor(type, value) {
