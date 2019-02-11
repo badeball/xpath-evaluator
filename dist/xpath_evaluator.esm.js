@@ -736,24 +736,16 @@ function evaluate$j (rootEvaluator, ast, context, type) {
 }
 
 function evaluate$k (context, value) {
-  if (!value) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   return new XPathBoolean(value.asBoolean());
 }
 
 function evaluate$l (context, number) {
-  if (!number) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   if (!(number instanceof XPathNumber)) {
@@ -792,12 +784,8 @@ function evaluate$n (context, base, contains) {
 }
 
 function evaluate$o (context, nodeset) {
-  if (!nodeset) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   if (!(nodeset instanceof XPathNodeSet)) {
@@ -812,12 +800,8 @@ function evaluate$p () {
 }
 
 function evaluate$q (context, number) {
-  if (!number) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   if (!(number instanceof XPathNumber)) {
@@ -828,12 +812,8 @@ function evaluate$q (context, number) {
 }
 
 function evaluate$r (context, value) {
-  if (!value) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   var node, ids = [];
@@ -928,24 +908,16 @@ function evaluate$v (context, value) {
 }
 
 function evaluate$w (context, value) {
-  if (!value) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   return new XPathBoolean(!value.asBoolean());
 }
 
 function evaluate$x (context, value) {
-  if (!value) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   return new XPathNumber(value.asNumber());
@@ -956,12 +928,8 @@ function evaluate$y (context) {
 }
 
 function evaluate$z (context, number) {
-  if (!number) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   if (!(number instanceof XPathNumber)) {
@@ -1080,12 +1048,8 @@ function evaluate$F (context, base, start, length) {
 }
 
 function evaluate$G (context, nodeset) {
-  if (!nodeset) {
-    throw new Error("Missing argument");
-  }
-
-  if (arguments.length > 2) {
-    throw new Error("Unknown argument(s)");
+  if (arguments.length !== 2) {
+    throw new Error("Expected a single argument");
   }
 
   if (!(nodeset instanceof XPathNodeSet)) {
