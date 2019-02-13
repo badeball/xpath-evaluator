@@ -207,51 +207,34 @@ class XPathNodeSet extends LinkedList {
       return a;
     }
 
+    var merged = new XPathNodeSet();
     var aCurr = a.head_;
     var bCurr = b.head_;
-    var merged = a, tail = null, next = null, length = 0;
 
     while (aCurr && bCurr) {
       if (aCurr.node.isEqual(bCurr.node)) {
-        next = aCurr;
+        merged.push(aCurr.node);
         aCurr = aCurr.next;
         bCurr = bCurr.next;
       } else {
         var compareResult = aCurr.node.compareDocumentPosition(bCurr.node);
 
         if (compareResult > 0) {
-          next = bCurr;
+          merged.push(bCurr.node);
           bCurr = bCurr.next;
         } else {
-          next = aCurr;
+          merged.push(aCurr.node);
           aCurr = aCurr.next;
         }
       }
-
-      next.previous = tail;
-
-      if (tail) {
-        tail.next = next;
-      } else {
-        merged.head_ = next;
-      }
-
-      tail = next;
-      length++;
     }
 
-    next = aCurr || bCurr;
+    var next = aCurr || bCurr;
 
     while (next) {
-      next.previous = tail;
-      tail.next = next;
-      tail = next;
-      length++;
+      merged.push(next.node);
       next = next.next;
     }
-
-    merged.tail_ = tail;
-    merged.length_ = length;
 
     return merged;
   }
