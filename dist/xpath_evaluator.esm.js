@@ -256,28 +256,6 @@ class XPathNodeSet extends LinkedList {
     return merged;
   }
 
-  static mergeWithoutOrder(a, b) {
-    var nodes = [], node, iter = a.iterator();
-
-    while ((node = iter.next())) {
-      nodes.push(node);
-    }
-
-    iter = b.iterator();
-
-    while ((node = iter.next())) {
-      var keep = nodes.every(function (addedNode) {
-        return !addedNode.isEqual(node);
-      });
-
-      if (keep) {
-        nodes.push(node);
-      }
-    }
-
-    return new XPathNodeSet(nodes);
-  }
-
   toString() {
     var node, iter = this.iterator();
 
