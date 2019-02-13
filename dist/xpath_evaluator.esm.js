@@ -676,11 +676,11 @@ function compareNodes (type, lhs, rhs, comparator) {
       if (comparator(lhs.asBoolean(), rhs.asBoolean())) {
         return new XPathBoolean(true);
       }
-    } else if (rhs instanceof XPathNumber || rhs instanceof XPathNumber) {
+    } else if (lhs instanceof XPathNumber || rhs instanceof XPathNumber) {
       if (comparator(lhs.asNumber(), rhs.asNumber())) {
         return new XPathBoolean(true);
       }
-    } else if (rhs instanceof XPathString || rhs instanceof XPathString) {
+    } else if (lhs instanceof XPathString || rhs instanceof XPathString) {
       if (comparator(lhs.asString(), rhs.asString())) {
         return new XPathBoolean(true);
       }
