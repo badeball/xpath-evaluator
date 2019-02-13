@@ -297,7 +297,7 @@ function evaluate(rootEvaluator, context) {
   if (context.getNode().getNodeType() !== DOCUMENT_NODE) {
     nodes = nodes.unshift(context.getNode().getParent());
 
-    nodes = nodes.merge(evaluate(rootEvaluator, new Context(context.getNode().getParent())));
+    nodes = nodes.merge(evaluate(rootEvaluator, new Context(context.getNode().getParent(), 1, 1)));
   }
 
   return nodes;
@@ -327,7 +327,7 @@ function evaluate$4 (rootEvaluator, context) {
   while ((child = iter.next())) {
     nodes = nodes.push(child);
 
-    nodes = nodes.merge(evaluate$4(rootEvaluator, new Context(child)));
+    nodes = nodes.merge(evaluate$4(rootEvaluator, new Context(child, 1, 1)));
   }
 
   return nodes;
@@ -533,7 +533,7 @@ function evaluate$d (rootEvaluator, ast, context, type) {
       var node, iter = nodeSet.iterator();
 
       while ((node = iter.next())) {
-        var stepResult = evaluate$c(rootEvaluator, ast.steps[i], new Context(node), type);
+        var stepResult = evaluate$c(rootEvaluator, ast.steps[i], new Context(node, 1, 1), type);
 
         nextNodeSet = nextNodeSet.merge(stepResult);
       }
@@ -548,7 +548,7 @@ function evaluate$d (rootEvaluator, ast, context, type) {
 
 function evaluate$e (rootEvaluator, ast, context, type) {
   if (context.getNode().getNodeType() !== DOCUMENT_NODE) {
-    context = new Context(context.getNode().getOwnerDocument());
+    context = new Context(context.getNode().getOwnerDocument(), 1, 1);
   }
 
   return evaluate$d(rootEvaluator, ast, context, type);
@@ -1243,7 +1243,7 @@ function evaluate$V (rootEvaluator, ast, context, type) {
     var nodeSets = [], node, iter = nodes.iterator();
 
     while ((node = iter.next())) {
-      nodeSets.push(evaluate$d(rootEvaluator, ast, new Context(node), type));
+      nodeSets.push(evaluate$d(rootEvaluator, ast, new Context(node, 1, 1), type));
     }
 
     nodes = nodeSets.reduce(function (previousValue, currentValue) {
@@ -1302,8 +1302,8 @@ class XPathExpression {
 
   evaluate(context, type, Adapter) {
     var ast = new XPathAnalyzer(this.expression).parse();
-  
-    return XPathExpression.evaluate(ast, new Context(new Adapter(context)), type);
+
+    return XPathExpression.evaluate(ast, new Context(new Adapter(context), 1, 1), type);
   }
 
   static evaluate(ast, context, type) {
