@@ -501,31 +501,30 @@ function evaluate$c (rootEvaluator, step, context, type) {
       step.axis === XPathAnalyzer.PRECEDING ||
       step.axis === XPathAnalyzer.PRECEDING_SIBLING);
 
-    var node, position = 0, filteredNodes = [], iter = nodes.iterator(reversed);
+    var node, position = 0, length = nodes.length(), iter = nodes.iterator(reversed);
 
     while ((node = iter.next())) {
       position++;
 
       var keep = step.predicates.every(function (predicate) {
-        var result = rootEvaluator.evaluate(predicate, new Context(node, position, nodes.length()), type);
+        var result = rootEvaluator.evaluate(predicate, new Context(node, position, length), type);
 
         if (result === null) {
           return false;
         }
 
         if (result instanceof XPathNumber) {
+          // console.log(`Checking if ${result.asNumber()} === ${position}`, predicate);
           return result.asNumber() === position;
         } else {
           return result.asBoolean();
         }
       });
 
-      if (keep) {
-        filteredNodes.push(node);
+      if (!keep) {
+        iter.remove();
       }
     }
-
-    nodes = new XPathNodeSet(filteredNodes);
   }
 
   return nodes;
@@ -719,13 +718,13 @@ function evaluate$i (rootEvaluator, ast, context, type) {
 function evaluate$j (rootEvaluator, ast, context, type) {
   var nodes = rootEvaluator.evaluate(ast.primary, context, type);
 
-  var node, position = 0, filteredNodes = [], iter = nodes.iterator();
+  var node, position = 0, lenght = nodes.length(), iter = nodes.iterator();
 
   while ((node = iter.next())) {
     position++;
 
     var keep = ast.predicates.every(function (predicate) {
-      var result = rootEvaluator.evaluate(predicate, new Context(node, position, nodes.length()), type);
+      var result = rootEvaluator.evaluate(predicate, new Context(node, position, length), type);
 
       if (result === null) {
         return false;
@@ -738,12 +737,12 @@ function evaluate$j (rootEvaluator, ast, context, type) {
       }
     });
 
-    if (keep) {
-      filteredNodes.push(node);
+    if (!keep) {
+      iter.remove();
     }
   }
 
-  return new XPathNodeSet(filteredNodes);
+  return nodes;
 }
 
 function evaluate$k (context, value) {
