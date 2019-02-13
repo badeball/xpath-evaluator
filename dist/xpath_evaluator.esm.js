@@ -291,33 +291,33 @@ class XPathNodeSet extends LinkedList {
   }
 }
 
-function evaluate(rootEvaluator, context) {
+function evaluate(rootEvaluator, context, type) {
   var nodes = new XPathNodeSet();
 
   if (context.getNode().getNodeType() !== DOCUMENT_NODE) {
     nodes = nodes.unshift(context.getNode().getParent());
 
-    nodes = nodes.merge(evaluate(rootEvaluator, new Context(context.getNode().getParent(), 1, 1)));
+    nodes = nodes.merge(evaluate(rootEvaluator, new Context(context.getNode().getParent(), 1, 1), type));
   }
 
   return nodes;
 }
 
-function evaluate$1 (rootEvaluator, context) {
+function evaluate$1 (rootEvaluator, context, type) {
   var nodes = new XPathNodeSet([context.getNode()], true);
 
-  return evaluate(rootEvaluator, context).merge(nodes);
+  return evaluate(rootEvaluator, context, type).merge(nodes);
 }
 
-function evaluate$2 (rootEvaluator, context) {
+function evaluate$2 (rootEvaluator, context, type) {
   return new XPathNodeSet(context.getNode().getAttributes());
 }
 
-function evaluate$3 (rootEvaluator, context) {
+function evaluate$3 (rootEvaluator, context, type) {
   return new XPathNodeSet(context.getNode().getChildNodes());
 }
 
-function evaluate$4 (rootEvaluator, context) {
+function evaluate$4 (rootEvaluator, context, type) {
   var nodes = new XPathNodeSet();
 
   var children = new XPathNodeSet(context.getNode().getChildNodes());
@@ -327,19 +327,19 @@ function evaluate$4 (rootEvaluator, context) {
   while ((child = iter.next())) {
     nodes = nodes.push(child);
 
-    nodes = nodes.merge(evaluate$4(rootEvaluator, new Context(child, 1, 1)));
+    nodes = nodes.merge(evaluate$4(rootEvaluator, new Context(child, 1, 1), type));
   }
 
   return nodes;
 }
 
-function evaluate$5 (rootEvaluator, context) {
+function evaluate$5 (rootEvaluator, context, type) {
   var nodes = new XPathNodeSet([context.getNode()]);
 
-  return nodes.merge(evaluate$4(rootEvaluator, context));
+  return nodes.merge(evaluate$4(rootEvaluator, context, type));
 }
 
-function evaluate$6 (rootEvaluator, context) {
+function evaluate$6 (rootEvaluator, context, type) {
   return rootEvaluator.evaluate({
     type: RELATIVE_LOCATION_PATH,
     steps: [{
@@ -358,10 +358,10 @@ function evaluate$6 (rootEvaluator, context) {
         type: NODE
       }
     }]
-  }, context);
+  }, context, type);
 }
 
-function evaluate$7 (rootEvaluator, context) {
+function evaluate$7 (rootEvaluator, context, type) {
   return new XPathNodeSet(context.getNode().getFollowingSiblings());
 }
 
@@ -369,7 +369,7 @@ function Namespace () {
   throw new Error("Namespace axis is not implemented");
 }
 
-function evaluate$8 (rootEvaluator, context) {
+function evaluate$8 (rootEvaluator, context, type) {
   var nodes = new XPathNodeSet();
 
   if (context.getNode().getNodeType() !== DOCUMENT_NODE) {
@@ -379,7 +379,7 @@ function evaluate$8 (rootEvaluator, context) {
   return nodes;
 }
 
-function evaluate$9 (rootEvaluator, context) {
+function evaluate$9 (rootEvaluator, context, type) {
   return rootEvaluator.evaluate({
     type: RELATIVE_LOCATION_PATH,
     steps: [{
@@ -398,14 +398,14 @@ function evaluate$9 (rootEvaluator, context) {
         type: NODE
       }
     }]
-  }, context);
+  }, context, type);
 }
 
-function evaluate$a (rootEvaluator, context) {
+function evaluate$a (rootEvaluator, context, type) {
   return new XPathNodeSet(context.getNode().getPrecedingSiblings());
 }
 
-function evaluate$b (rootEvaluator, context) {
+function evaluate$b (rootEvaluator, context, type) {
   return new XPathNodeSet([context.getNode()]);
 }
 
