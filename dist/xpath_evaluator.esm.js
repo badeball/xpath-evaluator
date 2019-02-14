@@ -38,6 +38,10 @@ class Iterator {
     this.i = 0;
   }
 
+  [Symbol.iterator]() {
+    return this;
+  }
+
   next() {
     this.i++;
 
@@ -54,7 +58,14 @@ class Iterator {
         this.current = this.current.next;
       }
 
-      return this.lastReturned.node;
+      return {
+        done: false,
+        value: this.lastReturned.node
+      };
+    } else {
+      return {
+        done: true
+      }
     }
   }
 
@@ -159,9 +170,9 @@ class LinkedList {
   }
 
   filter(condition) {
-    var node, iter = this.iterator();
+    var iter = this.iterator();
 
-    while ((node = iter.next())) {
+    for (var node of iter) {
       if (!condition(node)) {
         iter.remove();
       }
@@ -240,11 +251,9 @@ class XPathNodeSet extends LinkedList {
   }
 
   toString() {
-    var node, iter = this.iterator();
-
     var nodes = [];
 
-    while ((node = iter.next())) {
+    for (var node of this.iterator()) {
       nodes.push("" + node);
     }
 
@@ -283,9 +292,7 @@ function evaluate$4 (rootEvaluator, context, type) {
 
   var children = new XPathNodeSet(context.getNode().getChildNodes());
 
-  var child, iter = children.iterator();
-
-  while ((child = iter.next())) {
+  for (var child of children.iterator()) {
     nodes = nodes.push(child);
 
     nodes = nodes.merge(evaluate$4(rootEvaluator, new Context(child, 1, 1), type));
@@ -455,9 +462,9 @@ function evaluate$c (rootEvaluator, step, context, type) {
       step.axis === PRECEDING ||
       step.axis === PRECEDING_SIBLING);
 
-    var node, position = 0, length = nodes.length(), iter = nodes.iterator(reversed);
+    var position = 0, length = nodes.length(), iter = nodes.iterator(reversed);
 
-    while ((node = iter.next())) {
+    for (var node of iter) {
       position++;
 
       var keep = step.predicates.every(function (predicate) {
@@ -490,9 +497,7 @@ function evaluate$d (rootEvaluator, ast, context, type) {
 
   if (ast.steps) {
     for (var i = 0; i < ast.steps.length; i++) {
-      var node, iter = nodeSet.iterator();
-
-      while ((node = iter.next())) {
+      for (var node of nodeSet.iterator()) {
         var stepResult = evaluate$c(rootEvaluator, ast.steps[i], new Context(node, 1, 1), type);
 
         nextNodeSet = nextNodeSet.merge(stepResult);
@@ -580,12 +585,8 @@ class XPathString {
 
 function compareNodes (type, lhs, rhs, comparator) {
   if (lhs instanceof XPathNodeSet && rhs instanceof XPathNodeSet) {
-    var lNode, lIter = lhs.iterator();
-
-    while ((lNode = lIter.next())) {
-      var rNode, rIter = rhs.iterator();
-
-      while ((rNode = rIter.next())) {
+    for (var lNode of lhs.iterator()) {
+      for (var rNode of rhs.iterator()) {
         if (comparator(lNode.asString(), rNode.asString())) {
           return new XPathBoolean(true);
         }
@@ -611,9 +612,7 @@ function compareNodes (type, lhs, rhs, comparator) {
         return new XPathBoolean(true);
       }
     } else {
-      var node, iter = nodeSet.iterator();
-
-      while ((node = iter.next())) {
+      for (var node of nodeSet.iterator()) {
         if (primitive instanceof XPathNumber) {
           if (comparator(node.asNumber(), primitive.asNumber())) {
             return new XPathBoolean(true);
@@ -672,9 +671,9 @@ function evaluate$i (rootEvaluator, ast, context, type) {
 function evaluate$j (rootEvaluator, ast, context, type) {
   var nodes = rootEvaluator.evaluate(ast.primary, context, type);
 
-  var node, position = 0, lenght = nodes.length(), iter = nodes.iterator();
+  var position = 0, lenght = nodes.length(), iter = nodes.iterator();
 
-  while ((node = iter.next())) {
+  for (var node of iter) {
     position++;
 
     var keep = ast.predicates.every(function (predicate) {
@@ -783,9 +782,7 @@ function evaluate$r (context, value) {
   var node, ids = [];
 
   if (value instanceof XPathNodeSet) {
-    var iter = value.iterator();
-
-    while ((node = iter.next())) {
+    for (node of value.iterator()) {
       ids = ids.concat(node.asString().split(/\s+/g));
     }
   } else if (value instanceof XPathString) {
@@ -1020,9 +1017,9 @@ function evaluate$G (context, nodeset) {
     throw new Error("Wrong type of argument");
   }
 
-  var sum = 0, node, iter = nodeset.iterator();
+  var sum = 0;
 
-  while ((node = iter.next())) {
+  for (var node of nodeset.iterator()) {
     sum = sum + node.asNumber();
   }
 
@@ -1206,9 +1203,9 @@ function evaluate$V (rootEvaluator, ast, context, type) {
   var nodes = rootEvaluator.evaluate(ast.filter, context, type);
 
   if (ast.steps) {
-    var nodeSets = [], node, iter = nodes.iterator();
+    var nodeSets = [];
 
-    while ((node = iter.next())) {
+    for (var node of nodes.iterator()) {
       nodeSets.push(evaluate$d(rootEvaluator, ast, new Context(node, 1, 1), type));
     }
 
@@ -1332,9 +1329,7 @@ class XPathResult {
         this.resultType === ORDERED_NODE_SNAPSHOT_TYPE) {
       this.nodes = [];
 
-      var node, iter = this.value.iterator();
-
-      while ((node = iter.next())) {
+      for (var node of this.value.iterator()) {
         this.nodes.push(node.getNativeNode());
       }
     }

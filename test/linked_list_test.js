@@ -60,30 +60,42 @@ describe("XPathEvaluator", () => {
     it("should support forward iteration", () => {
       var iterator = new LinkedList(["foo", "bar", "baz"]).iterator();
 
-      Assert.equal("foo", iterator.next());
-      Assert.equal("bar", iterator.next());
-      Assert.equal("baz", iterator.next());
-      Assert.equal(null, iterator.next());
+      Assert.equal("foo", iterator.next().value);
+      Assert.equal("bar", iterator.next().value);
+      Assert.equal("baz", iterator.next().value);
+      Assert.equal(null, iterator.next().value);
     });
 
     it("should support reversed iteration", () => {
       var iterator = new LinkedList(["foo", "bar", "baz"]).iterator(true);
 
-      Assert.equal("baz", iterator.next());
-      Assert.equal("bar", iterator.next());
-      Assert.equal("foo", iterator.next());
-      Assert.equal(null, iterator.next());
+      Assert.equal("baz", iterator.next().value);
+      Assert.equal("bar", iterator.next().value);
+      Assert.equal("foo", iterator.next().value);
+      Assert.equal(null, iterator.next().value);
+    });
+
+    it("should act as a native iterable", () => {
+      var iterator = new LinkedList(["foo", "bar", "baz"]).iterator();
+
+      var iterationResult = [];
+
+      for (var node of iterator) {
+        iterationResult.push(node);
+      }
+
+      Assert.deepEqual(["foo", "bar", "baz"], iterationResult);
     });
 
     it("should support removing head element during forward iteration", () => {
       var list = new LinkedList(["foo", "bar", "baz"]);
       var iterator = list.iterator();
 
-      Assert.equal("foo", iterator.next());
+      Assert.equal("foo", iterator.next().value);
       iterator.remove();
-      Assert.equal("bar", iterator.next());
-      Assert.equal("baz", iterator.next());
-      Assert.equal(null, iterator.next());
+      Assert.equal("bar", iterator.next().value);
+      Assert.equal("baz", iterator.next().value);
+      Assert.equal(null, iterator.next().value);
 
       Assert.equal(2, list.length());
       Assert.equal(list.head().node, "bar");
@@ -98,11 +110,11 @@ describe("XPathEvaluator", () => {
       var list = new LinkedList(["foo", "bar", "baz"]);
       var iterator = list.iterator();
 
-      Assert.equal("foo", iterator.next());
-      Assert.equal("bar", iterator.next());
+      Assert.equal("foo", iterator.next().value);
+      Assert.equal("bar", iterator.next().value);
       iterator.remove();
-      Assert.equal("baz", iterator.next());
-      Assert.equal(null, iterator.next());
+      Assert.equal("baz", iterator.next().value);
+      Assert.equal(null, iterator.next().value);
 
       Assert.equal(2, list.length());
       Assert.equal(list.head().node, "foo");
@@ -117,11 +129,11 @@ describe("XPathEvaluator", () => {
       var list = new LinkedList(["foo", "bar", "baz"]);
       var iterator = list.iterator();
 
-      Assert.equal("foo", iterator.next());
-      Assert.equal("bar", iterator.next());
-      Assert.equal("baz", iterator.next());
+      Assert.equal("foo", iterator.next().value);
+      Assert.equal("bar", iterator.next().value);
+      Assert.equal("baz", iterator.next().value);
       iterator.remove();
-      Assert.equal(null, iterator.next());
+      Assert.equal(null, iterator.next().value);
 
       Assert.equal(2, list.length());
       Assert.equal(list.head().node, "foo");
@@ -136,11 +148,11 @@ describe("XPathEvaluator", () => {
       var list = new LinkedList(["foo", "bar", "baz"]);
       var iterator = list.iterator(true);
 
-      Assert.equal("baz", iterator.next());
+      Assert.equal("baz", iterator.next().value);
       iterator.remove();
-      Assert.equal("bar", iterator.next());
-      Assert.equal("foo", iterator.next());
-      Assert.equal(null, iterator.next());
+      Assert.equal("bar", iterator.next().value);
+      Assert.equal("foo", iterator.next().value);
+      Assert.equal(null, iterator.next().value);
 
       Assert.equal(2, list.length());
       Assert.equal(list.head().node, "foo");
@@ -155,11 +167,11 @@ describe("XPathEvaluator", () => {
       var list = new LinkedList(["foo", "bar", "baz"]);
       var iterator = list.iterator(true);
 
-      Assert.equal("baz", iterator.next());
-      Assert.equal("bar", iterator.next());
+      Assert.equal("baz", iterator.next().value);
+      Assert.equal("bar", iterator.next().value);
       iterator.remove();
-      Assert.equal("foo", iterator.next());
-      Assert.equal(null, iterator.next());
+      Assert.equal("foo", iterator.next().value);
+      Assert.equal(null, iterator.next().value);
 
       Assert.equal(2, list.length());
       Assert.equal(list.head().node, "foo");
@@ -174,11 +186,11 @@ describe("XPathEvaluator", () => {
       var list = new LinkedList(["foo", "bar", "baz"]);
       var iterator = list.iterator(true);
 
-      Assert.equal("baz", iterator.next());
-      Assert.equal("bar", iterator.next());
-      Assert.equal("foo", iterator.next());
+      Assert.equal("baz", iterator.next().value);
+      Assert.equal("bar", iterator.next().value);
+      Assert.equal("foo", iterator.next().value);
       iterator.remove();
-      Assert.equal(null, iterator.next());
+      Assert.equal(null, iterator.next().value);
 
       Assert.equal(2, list.length());
       Assert.equal(list.head().node, "bar");
