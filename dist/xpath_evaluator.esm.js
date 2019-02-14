@@ -698,18 +698,20 @@ function evaluate$j (rootEvaluator, ast, context, type) {
   return nodes;
 }
 
-function evaluate$k (context, value) {
-  if (arguments.length !== 2) {
+function evaluate$k (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
 
-  return new XPathBoolean(value.asBoolean());
+  return new XPathBoolean(args[0].asBoolean());
 }
 
-function evaluate$l (context, number) {
-  if (arguments.length !== 2) {
+function evaluate$l (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
+
+  var number = args[0];
 
   if (!(number instanceof XPathNumber)) {
     throw new Error("Wrong type of argument");
@@ -718,11 +720,7 @@ function evaluate$l (context, number) {
   return new XPathNumber(Math.ceil(number.asNumber()));
 }
 
-function evaluate$m () {
-  var args = [].slice.call(arguments);
-
-  args.shift();
-
+function evaluate$m (context, ...args) {
   if (args.length === 0) {
     throw new Error("Expected some arguments");
   }
@@ -734,22 +732,24 @@ function evaluate$m () {
   return new XPathString(args.join(""));
 }
 
-function evaluate$n (context, base, contains) {
-  if (!contains) {
+function evaluate$n (context, ...args) {
+  if (args.length !== 2) {
     throw new Error("Expected two arguments");
   }
 
-  base = base.asString();
+  var base = args[0].asString();
 
-  contains = contains.asString();
+  var contains = args[1].asString();
 
   return new XPathBoolean(base.indexOf(contains) !== -1);
 }
 
-function evaluate$o (context, nodeset) {
-  if (arguments.length !== 2) {
+function evaluate$o (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
+
+  var nodeset = args[0];
 
   if (!(nodeset instanceof XPathNodeSet)) {
     throw new Error("Wrong type of argument");
@@ -762,10 +762,12 @@ function evaluate$p () {
   return new XPathBoolean(false);
 }
 
-function evaluate$q (context, number) {
-  if (arguments.length !== 2) {
+function evaluate$q (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
+
+  var number = args[0];
 
   if (!(number instanceof XPathNumber)) {
     throw new Error("Wrong type of argument");
@@ -774,10 +776,12 @@ function evaluate$q (context, number) {
   return new XPathNumber(Math.floor(number.asNumber()));
 }
 
-function evaluate$r (context, value) {
-  if (arguments.length !== 2) {
+function evaluate$r (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
+
+  var value = args[0];
 
   var node, ids = [];
 
@@ -812,12 +816,14 @@ function evaluate$s (context) {
   return new XPathNumber(context.getLast());
 }
 
-function evaluate$t (context, nodeset) {
+function evaluate$t (context, ...args) {
+  var nodeset = args[0];
+
   if (!nodeset) {
     nodeset = new XPathNodeSet([context.getNode()]);
   }
 
-  if (arguments.length > 2) {
+  if (args.length > 1) {
     throw new Error("Expected at most one argument");
   }
 
@@ -832,11 +838,13 @@ function evaluate$t (context, nodeset) {
   }
 }
 
-function evaluate$u (context, nodeset) {
+function evaluate$u (context, ...args) {
+  var nodeset = args[0];
+
   if (!nodeset) {
     return new XPathString(context.getNode().getName());
   } else {
-    if (arguments.length > 2) {
+    if (args.length > 1) {
       throw new Error("Expected at most one argument");
     }
 
@@ -852,13 +860,15 @@ function evaluate$u (context, nodeset) {
   }
 }
 
-function evaluate$v (context, value) {
+function evaluate$v (context, ...args) {
+  var value = args[0];
+
   var string;
 
   if (!value) {
     string = context.getNode().asString();
   } else {
-    if (arguments.length > 2) {
+    if (args.length > 1) {
       throw new Error("Expected at most one argument");
     }
 
@@ -868,30 +878,32 @@ function evaluate$v (context, value) {
   return new XPathString(string.trim().replace(/\s{2,}/g, " "));
 }
 
-function evaluate$w (context, value) {
-  if (arguments.length !== 2) {
+function evaluate$w (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
 
-  return new XPathBoolean(!value.asBoolean());
+  return new XPathBoolean(!args[0].asBoolean());
 }
 
-function evaluate$x (context, value) {
-  if (arguments.length !== 2) {
+function evaluate$x (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
 
-  return new XPathNumber(value.asNumber());
+  return new XPathNumber(args[0].asNumber());
 }
 
 function evaluate$y (context) {
   return new XPathNumber(context.getPosition());
 }
 
-function evaluate$z (context, number) {
-  if (arguments.length !== 2) {
+function evaluate$z (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
+
+  var number = args[0];
 
   if (!(number instanceof XPathNumber)) {
     throw new Error("Wrong type of argument");
@@ -900,25 +912,27 @@ function evaluate$z (context, number) {
   return new XPathNumber(Math.round(number.asNumber()));
 }
 
-function evaluate$A (context, base, substring) {
-  if (!substring) {
+function evaluate$A (context, ...args) {
+  if (args.length !== 2) {
     throw new Error("Expected two arguments");
   }
 
-  base = base.asString();
+  var base = args[0].asString();
 
-  substring = substring.asString();
+  var substring = args[1].asString();
 
   var index = base.indexOf(substring);
 
   return new XPathBoolean(index === 0);
 }
 
-function evaluate$B (context, string) {
+function evaluate$B (context, ...args) {
+  var string = args[0];
+
   if (!string) {
     string = context.getNode().asString();
   } else {
-    if (arguments.length > 2) {
+    if (args.length > 1) {
       throw new Error("Expected at most one argument");
     }
 
@@ -932,26 +946,28 @@ function evaluate$B (context, string) {
   return new XPathNumber(string.length);
 }
 
-function evaluate$C (context, value) {
+function evaluate$C (context, ...args) {
+  var value = args[0];
+
   if (!value) {
     value = new XPathNodeSet([context.getNode()]);
   }
 
-  if (arguments.length > 2) {
+  if (args.length > 1) {
     throw new Error("Expected at most one argument");
   }
 
   return new XPathString(value.asString());
 }
 
-function evaluate$D (context, base, substring) {
-  if (!substring) {
+function evaluate$D (context, ...args) {
+  if (args.length !== 2) {
     throw new Error("Expected two arguments");
   }
 
-  base = base.asString();
+  var base = args[0].asString();
 
-  substring = substring.asString();
+  var substring = args[1].asString();
 
   var index = base.indexOf(substring);
 
@@ -962,14 +978,14 @@ function evaluate$D (context, base, substring) {
   }
 }
 
-function evaluate$E (context, base, substring) {
-  if (!substring) {
+function evaluate$E (context, ...args) {
+  if (args.length !== 2) {
     throw new Error("Expected two arguments");
   }
 
-  base = base.asString();
+  var base = args[0].asString();
 
-  substring = substring.asString();
+  var substring = args[1].asString();
 
   var index = base.indexOf(substring);
 
@@ -980,14 +996,16 @@ function evaluate$E (context, base, substring) {
   }
 }
 
-function evaluate$F (context, base, start, length) {
-  if (!start) {
+function evaluate$F (context, ...args) {
+  if (args.length !== 2 && args.length !== 3) {
     throw new Error("Expected two or three arguments");
   }
 
-  base = base.asString();
+  var base = args[0].asString();
 
-  start = Math.round(start.asNumber());
+  var start = Math.round(args[1].asNumber());
+
+  var length = args[2];
 
   if (isNaN(start) || start === Infinity || start === -Infinity) {
     return new XPathString("");
@@ -1008,10 +1026,12 @@ function evaluate$F (context, base, start, length) {
   }
 }
 
-function evaluate$G (context, nodeset) {
-  if (arguments.length !== 2) {
+function evaluate$G (context, ...args) {
+  if (args.length !== 1) {
     throw new Error("Expected a single argument");
   }
+
+  var nodeset = args[0];
 
   if (!(nodeset instanceof XPathNodeSet)) {
     throw new Error("Wrong type of argument");
@@ -1026,10 +1046,12 @@ function evaluate$G (context, nodeset) {
   return new XPathNumber(sum);
 }
 
-function evaluate$H (context, base, mapFrom, mapTo) {
-  if (!mapTo) {
+function evaluate$H (context, ...args) {
+  if (args.length !== 3) {
     throw new Error("Expected three arguments");
   }
+
+  var base = args[0], mapFrom = args[1], mapTo = args[2];
 
   if (!(base instanceof XPathString) ||
       !(mapFrom instanceof XPathString) ||
