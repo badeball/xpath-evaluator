@@ -1288,11 +1288,14 @@ Evaluators[XPathAnalyzer.SUBTRACTIVE] = evaluate$W;
 Evaluators[XPathAnalyzer.UNION] = evaluate$X;
 
 class XPathExpression {
-  constructor(expression) {
+  constructor(expression, adapter) {
     this.expression = expression;
+    this.adapter = adapter;
   }
 
-  evaluate(context, type, Adapter) {
+  evaluate(context, type) {
+    var Adapter = this.adapter;
+
     var ast = new XPathAnalyzer__default(this.expression).parse();
 
     return XPathExpression.evaluate(ast, new Context(new Adapter(context), 1, 1), type);
@@ -1489,9 +1492,9 @@ class XPathEvaluator {
     if (nsResolver) {
       throwNotImplemented();
     }
-  
-    var value = this.createExpression(expression).evaluate(context, type, this.adapter);
-  
+
+    var value = this.createExpression(expression).evaluate(context, type);
+
     return new XPathResult(type, value);
   }
 
@@ -1499,8 +1502,8 @@ class XPathEvaluator {
     if (nsResolver) {
       throwNotImplemented();
     }
-  
-    return new XPathExpression(expression);
+
+    return new XPathExpression(expression, this.adapter);
   }
 
   createNSResolver() {
