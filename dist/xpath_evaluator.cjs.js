@@ -1460,16 +1460,14 @@ XPathResult.FIRST_ORDERED_NODE_TYPE = FIRST_ORDERED_NODE_TYPE;
 
 class XPathExpression {
   constructor(expression, adapter) {
-    this.expression = expression;
+    this.ast = new XPathAnalyzer__default(expression).parse();
     this.adapter = adapter;
   }
 
   evaluate(context, type) {
     var Adapter = this.adapter;
 
-    var ast = new XPathAnalyzer__default(this.expression).parse();
-
-    return XPathExpression.evaluate(ast, new Context(new Adapter(context), 1, 1), type);
+    return XPathExpression.evaluate(this.ast, new Context(new Adapter(context), 1, 1), type);
   }
 
   static evaluate(ast, context, type) {
