@@ -644,23 +644,25 @@ function compareNodes (type, lhs, rhs, comparator) {
       primitive = lhs;
     }
 
-    var node, iter = nodeSet.iterator();
+    if (primitive instanceof XPathBoolean) {
+      if (comparator(nodeSet.asBoolean(), primitive.asBoolean())) {
+        return new XPathBoolean(true);
+      }
+    } else {
+      var node, iter = nodeSet.iterator();
 
-    while ((node = iter.next())) {
-      if (primitive instanceof XPathNumber) {
-        if (comparator(node.asNumber(), primitive.asNumber())) {
-          return new XPathBoolean(true);
+      while ((node = iter.next())) {
+        if (primitive instanceof XPathNumber) {
+          if (comparator(node.asNumber(), primitive.asNumber())) {
+            return new XPathBoolean(true);
+          }
+        } else if (primitive instanceof XPathString) {
+          if (comparator(node.asString(), primitive.asString())) {
+            return new XPathBoolean(true);
+          }
+        } else {
+          throw new Error("Unknown value type");
         }
-      } else if (primitive instanceof XPathBoolean) {
-        if (comparator(node.asBoolean(), primitive.asBoolean())) {
-          return new XPathBoolean(true);
-        }
-      } else if (primitive instanceof XPathString) {
-        if (comparator(node.asString(), primitive.asString())) {
-          return new XPathBoolean(true);
-        }
-      } else {
-        throw new Error("Unknown value type");
       }
     }
 
