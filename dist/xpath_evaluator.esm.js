@@ -587,7 +587,9 @@ function evaluate$g (rootEvaluator, ast, context, type) {
     return new XPathBoolean(false);
   }
 
-  return rootEvaluator.evaluate(ast.rhs, context, type);
+  var rhs = rootEvaluator.evaluate(ast.rhs, context, type);
+
+  return new XPathBoolean(rhs.asBoolean());
 }
 
 function evaluate$h (rootEvaluator, ast, context, type) {
@@ -1235,7 +1237,9 @@ function evaluate$U (rootEvaluator, ast, context, type) {
     return new XPathBoolean(true);
   }
 
-  return rootEvaluator.evaluate(ast.rhs, context, type);
+  var rhs = rootEvaluator.evaluate(ast.rhs, context, type);
+
+  return new XPathBoolean(rhs.asBoolean());
 }
 
 function evaluate$V (rootEvaluator, ast, context, type) {
