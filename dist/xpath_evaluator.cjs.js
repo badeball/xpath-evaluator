@@ -29,10 +29,18 @@ Context.prototype.toString = function () {
   return "Context<" + this.node + ">";
 };
 
+var ELEMENT_NODE = 1;
+var ATTRIBUTE_NODE = 2;
 var TEXT_NODE = 3;
+var CDATA_SECTION_NODE = 4;
+var ENTITY_REFERENCE_NODE = 5;
+var ENTITY_NODE = 6;
 var PROCESSING_INSTRUCTION_NODE = 7;
 var COMMENT_NODE = 8;
 var DOCUMENT_NODE = 9;
+var DOCUMENT_TYPE_NODE = 10;
+var DOCUMENT_FRAGMENT_NODE = 11;
+var NOTATION_NODE = 12;
 
 /* eslint-disable no-underscore-dangle */
 
@@ -1539,3 +1547,15 @@ XPathEvaluator.prototype.createNSResolver = function () {
 
 exports.default = XPathEvaluator;
 exports.XPathResult = XPathResult;
+exports.ELEMENT_NODE = ELEMENT_NODE;
+exports.ATTRIBUTE_NODE = ATTRIBUTE_NODE;
+exports.TEXT_NODE = TEXT_NODE;
+exports.CDATA_SECTION_NODE = CDATA_SECTION_NODE;
+exports.ENTITY_REFERENCE_NODE = ENTITY_REFERENCE_NODE;
+exports.ENTITY_NODE = ENTITY_NODE;
+exports.PROCESSING_INSTRUCTION_NODE = PROCESSING_INSTRUCTION_NODE;
+exports.COMMENT_NODE = COMMENT_NODE;
+exports.DOCUMENT_NODE = DOCUMENT_NODE;
+exports.DOCUMENT_TYPE_NODE = DOCUMENT_TYPE_NODE;
+exports.DOCUMENT_FRAGMENT_NODE = DOCUMENT_FRAGMENT_NODE;
+exports.NOTATION_NODE = NOTATION_NODE;
