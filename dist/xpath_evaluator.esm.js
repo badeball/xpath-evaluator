@@ -45,10 +45,6 @@ class Iterator {
   next() {
     this.i++;
 
-    if (this.i > 10000) {
-      throw new Error("An error has probably ocurred!");
-    }
-
     if (this.current) {
       this.lastReturned = this.current;
 
