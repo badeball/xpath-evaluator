@@ -1280,27 +1280,6 @@ Evaluators[RELATIVE_LOCATION_PATH] = evaluate$d;
 Evaluators[SUBTRACTIVE] = evaluate$W;
 Evaluators[UNION] = evaluate$X;
 
-class XPathExpression {
-  constructor(expression, adapter) {
-    this.expression = expression;
-    this.adapter = adapter;
-  }
-
-  evaluate(context, type) {
-    var Adapter = this.adapter;
-
-    var ast = new XPathAnalyzer(this.expression).parse();
-
-    return XPathExpression.evaluate(ast, new Context(new Adapter(context), 1, 1), type);
-  }
-
-  static evaluate(ast, context, type) {
-    var evaluator = Evaluators[ast.type];
-
-    return evaluator(XPathExpression, ast, context, type);
-  }
-}
-
 class XPathException {
   constructor(code, message) {
     this.code = code;
@@ -1472,6 +1451,29 @@ XPathResult.ORDERED_NODE_SNAPSHOT_TYPE = ORDERED_NODE_SNAPSHOT_TYPE;
 XPathResult.ANY_UNORDERED_NODE_TYPE = ANY_UNORDERED_NODE_TYPE;
 XPathResult.FIRST_ORDERED_NODE_TYPE = FIRST_ORDERED_NODE_TYPE;
 
+class XPathExpression {
+  constructor(expression, adapter) {
+    this.expression = expression;
+    this.adapter = adapter;
+  }
+
+  evaluate(context, type) {
+    var Adapter = this.adapter;
+
+    var ast = new XPathAnalyzer(this.expression).parse();
+
+    return XPathExpression.evaluate(ast, new Context(new Adapter(context), 1, 1), type);
+  }
+
+  static evaluate(ast, context, type) {
+    var evaluator = Evaluators[ast.type];
+
+    var value = evaluator(XPathExpression, ast, context, type);
+
+    return new XPathResult(type, value);
+  }
+}
+
 function throwNotImplemented () {
   throw new Error("Namespaces are not implemented");
 }
@@ -1486,9 +1488,7 @@ class XPathEvaluator {
       throwNotImplemented();
     }
 
-    var value = this.createExpression(expression).evaluate(context, type);
-
-    return new XPathResult(type, value);
+    return this.createExpression(expression).evaluate(context, type);
   }
 
   createExpression(expression, nsResolver) {
