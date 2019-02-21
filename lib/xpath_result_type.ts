@@ -1,0 +1,10 @@
+export const ANY_TYPE = 0;
+export const NUMBER_TYPE = 1;
+export const STRING_TYPE = 2;
+export const BOOLEAN_TYPE = 3;
+export const UNORDERED_NODE_ITERATOR_TYPE = 4;
+export const ORDERED_NODE_ITERATOR_TYPE = 5;
+export const UNORDERED_NODE_SNAPSHOT_TYPE = 6;
+export const ORDERED_NODE_SNAPSHOT_TYPE = 7;
+export const ANY_UNORDERED_NODE_TYPE = 8;
+export const FIRST_ORDERED_NODE_TYPE = 9;

@@ -4,6 +4,7 @@
   "description": "An evaluator for XPath 1.0 expressions.",
   "main": "dist/xpath_evaluator.cjs.js",
   "module": "dist/xpath_evaluator.esm.js",
+  "types": "dist/xpath_evaluator.d.ts",
   "author": "Jonas Amundsen <jonasba@gmail.com>",
   "repository": {
     "type": "git",
@@ -13,13 +14,16 @@
     "prepublishOnly": "make ensure-built"
   },
   "dependencies": {
-    "xpath-analyzer": "^2.0.0"
+    "xpath-analyzer": "^3.0.0"
   },
   "devDependencies": {
-    "eslint": "^5.12.0",
-    "esm": "^3.0.84",
+    "@types/mocha": "^5.2.5",
+    "dts-bundle-generator": "^2.0.0",
     "mocha": "^5.2.0",
-    "rollup": "^1.0.1"
+    "rollup": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.19.2",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.4"
   },
   "files": [
     "dist"
